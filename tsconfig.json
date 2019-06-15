@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "esnext",
+    "sourceMap": false,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "jsx": "react",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "renderer/*"
+      ],
+      "~/*": [
+        "renderer/*"
+      ]
+    }
+  },
+  "include": [
+    "./main/**/*",
+    "./renderer/**/*"
+  ],
+  "exclude": [
+    "dist"
+  ]
+}
