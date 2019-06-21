@@ -5,22 +5,22 @@
     "sourceMap": false,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "jsx": "react",
     "baseUrl": ".",
     "paths": {
       "@/*": [
-        "renderer/*"
+        "app/*"
       ],
       "~/*": [
-        "renderer/*"
+        "app/*"
       ]
     }
   },
   "include": [
-    "./main/**/*",
-    "./renderer/**/*"
+    "./src/**/*"
   ],
   "exclude": [
-    "dist"
+    "./src/dist"
   ]
 }

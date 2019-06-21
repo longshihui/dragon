@@ -1,5 +1,3 @@
-/* eslint global-require: off */
-
 /**
  * This module executes inside of electron's main process. You can start
  * electron renderer process from here and communicate with the other processes
@@ -10,16 +8,7 @@
  *
  */
 import { app, BrowserWindow } from "electron";
-import { autoUpdater } from "electron-updater";
-import log from "electron-log";
-
-export default class AppUpdater {
-  constructor() {
-    log.transports.file.level = "info";
-    autoUpdater.logger = log;
-    autoUpdater.checkForUpdatesAndNotify();
-  }
-}
+import path from "path";
 
 let mainWindow = null;
 
@@ -36,13 +25,20 @@ if (
 }
 
 const installExtensions = async () => {
-  const installer = require("electron-devtools-installer");
-  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-  const extensions = ["REACT_DEVELOPER_TOOLS", "REDUX_DEVTOOLS"];
-
-  return Promise.all(
-    extensions.map(name => installer.default(installer[name], forceDownload))
-  ).catch(console.log);
+  console.log(process.env.HOME);
+  BrowserWindow.addDevToolsExtension(
+    path.resolve(
+      process.env.HOME,
+      "./Library/Application Support/Google/Chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/3.6.0_0"
+    )
+  );
+  // const installer = require('electron-devtools-installer');
+  // const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
+  // const extensions = ['REACT_DEVELOPER_TOOLS', 'REDUX_DEVTOOLS'];
+  //
+  // return Promise.all(
+  //   extensions.map(name => installer.default(installer[name], forceDownload))
+  // ).catch(console.log);
 };
 
 /**
@@ -95,8 +91,4 @@ app.on("ready", async () => {
   mainWindow.on("closed", () => {
     mainWindow = null;
   });
-
-  // Remove this if your app does not use auto updates
-  // eslint-disable-next-line
-  new AppUpdater();
 });

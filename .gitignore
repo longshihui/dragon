@@ -126,3 +126,4 @@ Temporary Items
 .apdisk
 # 编译之后的目录
 dist
+/dll/

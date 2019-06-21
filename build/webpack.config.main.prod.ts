@@ -1,36 +1,41 @@
 /**
- * Webpack config for production electron main process
+ * Electron主进程生产环境打包配置
  */
-
 import webpack from "webpack";
 import merge from "webpack-merge";
+// 代码压缩
+import TerserPlugin from "terser-webpack-plugin";
+// 打包解析
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
-import CopyWebpackPlugin from "copy-webpack-plugin";
 import baseConfig from "./webpack.config.base";
-import CheckNodeEnv from "../internals/scripts/CheckNodeEnv";
+import CheckNodeEnv from "./utils/CheckNodeEnv";
 
 CheckNodeEnv("production");
 
-export default merge.smart(baseConfig, {
-  devtool: "source-map",
+module.exports = merge.smart(baseConfig, {
+  devtool: process.env.DEBUG_PROD ? "source-map" : false,
 
   mode: "production",
 
   target: "electron-main",
 
-  entry: "./main/app",
+  entry: "./src/main.ts",
 
   output: {
-    filename: "main.prod.js"
+    filename: "main.js"
+  },
+
+  optimization: {
+    minimizer: [
+      new TerserPlugin({
+        parallel: true,
+        sourceMap: true,
+        cache: true
+      })
+    ]
   },
 
   plugins: [
-    new CopyWebpackPlugin([
-      {
-        from: "./main/app.html",
-        to: "./"
-      }
-    ]),
     new BundleAnalyzerPlugin({
       analyzerMode:
         process.env.OPEN_ANALYZER === "true" ? "server" : "disabled",
@@ -48,7 +53,7 @@ export default merge.smart(baseConfig, {
      */
     new webpack.EnvironmentPlugin({
       NODE_ENV: "production",
-      DEBUG_PROD: true,
+      DEBUG_PROD: process.env.DEBUG_PROD,
       START_MINIMIZED: false
     })
   ],
