@@ -10,21 +10,21 @@ import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import merge from "webpack-merge";
 import TerserPlugin from "terser-webpack-plugin";
 import baseConfig from "./webpack.config.base";
-import CheckNodeEnv from "../internals/scripts/CheckNodeEnv";
+import CheckNodeEnv from "./utils/CheckNodeEnv";
 
 CheckNodeEnv("production");
 
-export default merge.smart(baseConfig, {
+module.exports = merge.smart(baseConfig, {
   devtool: "source-map",
 
   mode: "production",
 
   target: "electron-renderer",
 
-  entry: path.join(__dirname, "..", "renderer/index"),
+  entry: path.join(__dirname, "..", "src/app.tsx"),
 
   output: {
-    publicPath: "./dist/",
+    publicPath: "./",
     filename: "renderer.prod.js"
   },
 
@@ -76,7 +76,7 @@ export default merge.smart(baseConfig, {
             loader: "css-loader",
             options: {
               sourceMap: true,
-              importLoaders: 1
+              constLoaders: 1
             }
           },
           {
@@ -98,7 +98,7 @@ export default merge.smart(baseConfig, {
             loader: "css-loader",
             options: {
               modules: true,
-              importLoaders: 1,
+              constLoaders: 1,
               localIdentName: "[name]__[local]__[hash:base64:5]",
               sourceMap: true
             }

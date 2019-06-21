@@ -4,16 +4,15 @@
 
 import path from "path";
 import webpack from "webpack";
-import { dependencies } from "../package.json";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
+import { dependencies } from "../package.json";
 
 export default {
   externals: [...Object.keys(dependencies || {})],
-
   module: {
     rules: [
       {
-        test: /\.ts(x?)$/,
+        test: /\.tsx?$/,
         exclude: /node_modules/,
         use: [
           {
@@ -44,9 +43,7 @@ export default {
   },
 
   output: {
-    path: path.join(__dirname, "..", "dist"),
-    // https://github.com/webpack/webpack/issues/1114
-    libraryTarget: "commonjs2"
+    path: path.join(__dirname, "..", "dist")
   },
 
   /**
@@ -57,11 +54,11 @@ export default {
   },
 
   plugins: [
-    new ForkTsCheckerWebpackPlugin(),
+    new ForkTsCheckerWebpackPlugin({
+      formatter: "codeframe"
+    }),
     new webpack.EnvironmentPlugin({
       NODE_ENV: "production"
-    }),
-
-    new webpack.NamedModulesPlugin()
+    })
   ]
 };
