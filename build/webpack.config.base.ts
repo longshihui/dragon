@@ -9,6 +9,7 @@ import { dependencies } from "../package.json";
 
 export default {
   externals: [...Object.keys(dependencies || {})],
+  context: path.resolve(__dirname, ".."),
   module: {
     rules: [
       {
@@ -24,6 +25,7 @@ export default {
           {
             loader: "ts-loader",
             options: {
+              configFile: path.resolve(__dirname, "..", "tsconfig.json"),
               transpileOnly: true
             }
           }

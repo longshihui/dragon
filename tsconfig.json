@@ -21,6 +21,7 @@
     "./src/**/*"
   ],
   "exclude": [
-    "./src/dist"
+    "./dist",
+    "node_modules"
   ]
 }
