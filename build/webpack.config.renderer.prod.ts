@@ -11,6 +11,7 @@ import merge from "webpack-merge";
 import TerserPlugin from "terser-webpack-plugin";
 import baseConfig from "./webpack.config.base";
 import CheckNodeEnv from "./utils/CheckNodeEnv";
+import HtmlWebpackPlugin from "html-webpack-plugin";
 
 CheckNodeEnv("production");
 

@@ -9,11 +9,12 @@
  */
 import { app, BrowserWindow } from "electron";
 import path from "path";
+import ElectronDebug from "electron-debug";
+import sourceMapSupport from "source-map-support";
 
 let mainWindow = null;
 
 if (process.env.NODE_ENV === "production") {
-  const sourceMapSupport = require("source-map-support");
   sourceMapSupport.install();
 }
 
@@ -21,11 +22,10 @@ if (
   process.env.NODE_ENV === "development" ||
   process.env.DEBUG_PROD === "true"
 ) {
-  require("electron-debug")();
+  ElectronDebug();
 }
 
 const installExtensions = async () => {
-  console.log(process.env.HOME);
   BrowserWindow.addDevToolsExtension(
     path.resolve(
       process.env.HOME,
@@ -62,17 +62,16 @@ app.on("ready", async () => {
   }
 
   mainWindow = new BrowserWindow({
-    show: false,
+    show: true,
     width: 1024,
-    height: 728,
-    webPreferences: {
-      nodeIntegration: true
-    }
+    height: 728
   });
 
   mainWindow.webContents.openDevTools();
 
-  mainWindow.loadURL(`file://${__dirname}/app.html`);
+  mainWindow.loadURL(
+    `file://${path.resolve(__dirname, "..", "./public/app.html")}`
+  );
 
   // @TODO: Use 'ready-to-show' event
   //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event

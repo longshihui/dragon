@@ -12,6 +12,7 @@ import webpack from "webpack";
 import merge from "webpack-merge";
 import { spawn } from "child_process";
 import baseConfig from "./webpack.config.base";
+import FriendlyErrorsWebpackPlugin from "friendly-errors-webpack-plugin";
 
 interface Options {
   host: string;
@@ -29,16 +30,12 @@ export default function({ host, port, dllManifestPath }: Options) {
 
     target: "electron-renderer",
 
-    entry: [
-      "react-hot-loader/patch",
-      `webpack-dev-server/client?http://localhost:${port}/`,
-      "webpack/hot/only-dev-server",
-      require.resolve("../src/app.tsx")
-    ],
+    entry: ["react-hot-loader/patch", require.resolve("../src/app.tsx")],
 
     output: {
-      publicPath: `http://localhost:${port}/`,
-      filename: "renderer.js"
+      publicPath,
+      filename: "renderer.js",
+      libraryTarget: "commonjs2"
     },
 
     module: {
@@ -205,15 +202,23 @@ export default function({ host, port, dllManifestPath }: Options) {
       new webpack.EnvironmentPlugin({
         NODE_ENV: "development"
       }),
-      new webpack.ProgressPlugin()
+      new webpack.ProgressPlugin(),
+      new FriendlyErrorsWebpackPlugin({
+        compilationSuccessInfo: {
+          messages: [`Render进程运行在 ${publicPath}`],
+          notes: ["编译成功"]
+        },
+        clearConsole: true
+      })
     ],
-
     node: {
       __dirname: false,
       __filename: false
     },
 
     devServer: {
+      host,
+      port,
       publicPath,
       compress: true,
       noInfo: true,
@@ -221,8 +226,14 @@ export default function({ host, port, dllManifestPath }: Options) {
       inline: true,
       lazy: false,
       hot: true,
+      overlay: true,
       headers: { "Access-Control-Allow-Origin": "*" },
-      contentBase: path.join(__dirname, "dist"),
+      contentBase: [
+        path.join(__dirname, "..", "dist"),
+        path.join(__dirname, "..", "dll")
+      ],
+      index: "app.html",
+      quiet: true,
       watchOptions: {
         aggregateTimeout: 300,
         ignored: /node_modules/,

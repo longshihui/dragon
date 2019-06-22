@@ -3,45 +3,23 @@
  */
 import webpack from "webpack";
 import merge from "webpack-merge";
-// 代码压缩
-import TerserPlugin from "terser-webpack-plugin";
-// 打包解析
-import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import baseConfig from "./webpack.config.base";
-import CheckNodeEnv from "./utils/CheckNodeEnv";
 
-CheckNodeEnv("production");
+export default merge.smart(baseConfig, {
+  devtool: "source-map",
 
-module.exports = merge.smart(baseConfig, {
-  devtool: process.env.DEBUG_PROD ? "source-map" : false,
-
-  mode: "production",
+  mode: "development",
 
   target: "electron-main",
 
   entry: "./src/main.ts",
 
   output: {
-    filename: "main.ts.js.js"
-  },
-
-  optimization: {
-    minimizer: [
-      new TerserPlugin({
-        parallel: true,
-        sourceMap: true,
-        cache: true
-      })
-    ]
+    filename: "main.js",
+    libraryTarget: "commonjs2"
   },
 
   plugins: [
-    new BundleAnalyzerPlugin({
-      analyzerMode:
-        process.env.OPEN_ANALYZER === "true" ? "server" : "disabled",
-      openAnalyzer: process.env.OPEN_ANALYZER === "true"
-    }),
-
     /**
      * Create global constants which can be configured at compile time.
      *
@@ -52,8 +30,8 @@ module.exports = merge.smart(baseConfig, {
      * development checks
      */
     new webpack.EnvironmentPlugin({
-      NODE_ENV: "production",
-      DEBUG_PROD: process.env.DEBUG_PROD,
+      NODE_ENV: "development",
+      DEBUG_PROD: false,
       START_MINIMIZED: false
     })
   ],
