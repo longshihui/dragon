@@ -7,12 +7,25 @@ import portFinder from "portfinder";
 import path from "path";
 import CheckNodeEnv from "../build/utils/CheckNodeEnv";
 import ChildProcess from "child_process";
+import rm from "rimraf";
 
 CheckNodeEnv("development");
 
 const DEFAULT_PORT = 1212;
 const DEFAULT_HOST = "localhost";
 const DLL_OUTPUT_PATH = path.join(__dirname, "..", "dll");
+
+async function cleanOldFiles() {
+  return new Promise((resolve, reject) => {
+    rm(path.resolve(__dirname, "./dist"), err => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve();
+    });
+  });
+}
 
 async function buildDll() {
   console.log("构建dll");
@@ -75,6 +88,7 @@ async function runMainProcess() {
 }
 
 async function main() {
+  await cleanOldFiles();
   await buildDll();
   await buildMainProcess();
   const server = await runServer();
