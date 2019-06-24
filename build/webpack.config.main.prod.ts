@@ -12,7 +12,7 @@ import CheckNodeEnv from "./utils/CheckNodeEnv";
 
 CheckNodeEnv("production");
 
-module.exports = merge.smart(baseConfig, {
+export default merge.smart(baseConfig, {
   devtool: process.env.DEBUG_PROD ? "source-map" : false,
 
   mode: "production",
@@ -22,7 +22,8 @@ module.exports = merge.smart(baseConfig, {
   entry: "./src/main.ts",
 
   output: {
-    filename: "main.ts.js.js"
+    filename: "main.js",
+    libraryTarget: "commonjs2"
   },
 
   optimization: {

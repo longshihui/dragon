@@ -11,11 +11,10 @@ import merge from "webpack-merge";
 import TerserPlugin from "terser-webpack-plugin";
 import baseConfig from "./webpack.config.base";
 import CheckNodeEnv from "./utils/CheckNodeEnv";
-import HtmlWebpackPlugin from "html-webpack-plugin";
 
 CheckNodeEnv("production");
 
-module.exports = merge.smart(baseConfig, {
+export default merge.smart(baseConfig, {
   devtool: "source-map",
 
   mode: "production",
@@ -26,7 +25,8 @@ module.exports = merge.smart(baseConfig, {
 
   output: {
     publicPath: "./",
-    filename: "renderer.prod.js"
+    filename: "renderer.js",
+    libraryTarget: "commonjs2"
   },
 
   module: {
