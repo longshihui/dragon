@@ -17,7 +17,9 @@
 
       if (process.env.NODE_ENV === 'development') {
         createScript('../dll/renderer.dev.dll.js');
-        createScript('http://localhost:1212/renderer.js')
+        createScript('http://localhost:1212/renderer.js');
+      } else {
+        createScript('../dist/renderer.js');
       }
     </script>
   </body>

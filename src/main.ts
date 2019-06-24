@@ -67,7 +67,12 @@ app.on("ready", async () => {
     height: 728
   });
 
-  mainWindow.webContents.openDevTools();
+  if (
+    process.env.NODE_ENV === "development" ||
+    process.env.DEBUG_PROD === "true"
+  ) {
+    mainWindow.webContents.openDevTools();
+  }
 
   mainWindow.loadURL(
     `file://${path.resolve(__dirname, "..", "./public/app.html")}`
