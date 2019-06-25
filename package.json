@@ -136,6 +136,7 @@
     "yarn": "^1.15.2"
   },
   "dependencies": {
+    "antd": "^3.19.8",
     "connected-react-router": "^6.3.2",
     "core-js": "2",
     "devtron": "^1.4.0",

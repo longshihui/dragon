@@ -6,7 +6,7 @@ import path from "path";
 
 async function cleanOldFiles() {
   return new Promise((resolve, reject) => {
-    rm(path.resolve(__dirname, "./dist"), err => {
+    rm(path.resolve(__dirname, "..", "./dist"), err => {
       if (err) {
         reject(err);
         return;

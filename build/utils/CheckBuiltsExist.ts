@@ -8,14 +8,14 @@ function CheckBuildsExist() {
     __dirname,
     "..",
     "..",
-    "app",
+    "App.tsx",
     "main.ts.js.prod.js"
   );
   const rendererPath = path.join(
     __dirname,
     "..",
     "..",
-    "app",
+    "App.tsx",
     "dist",
     "renderer.prod.js"
   );

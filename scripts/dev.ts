@@ -17,7 +17,7 @@ const DLL_OUTPUT_PATH = path.join(__dirname, "..", "dll");
 
 async function cleanOldFiles() {
   return new Promise((resolve, reject) => {
-    rm(path.resolve(__dirname, "./dist"), err => {
+    rm(path.resolve(__dirname, "..", "./dist"), err => {
       if (err) {
         reject(err);
         return;
