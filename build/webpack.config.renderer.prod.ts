@@ -21,7 +21,7 @@ export default merge.smart(baseConfig, {
 
   target: "electron-renderer",
 
-  entry: path.join(__dirname, "..", "src/app.tsx"),
+  entry: path.join(__dirname, "..", "src/App.tsx"),
 
   output: {
     publicPath: "./",

@@ -30,7 +30,7 @@ export default function({ host, port, dllManifestPath }: Options) {
 
     target: "electron-renderer",
 
-    entry: ["react-hot-loader/patch", require.resolve("../src/app.tsx")],
+    entry: ["react-hot-loader/patch", require.resolve("../src/App.tsx")],
 
     output: {
       publicPath,
@@ -232,7 +232,7 @@ export default function({ host, port, dllManifestPath }: Options) {
         path.join(__dirname, "..", "dist"),
         path.join(__dirname, "..", "dll")
       ],
-      index: "app.html",
+      index: "App.tsx.html",
       quiet: true,
       watchOptions: {
         aggregateTimeout: 300,
