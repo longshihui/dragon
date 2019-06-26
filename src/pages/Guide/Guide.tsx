@@ -8,7 +8,7 @@ const { Footer, Content } = Layout;
 export default function Guide() {
   return (
     <Layout className={styles.layout}>
-      <Content style={styles.content}>
+      <Content className={styles.content}>
         {config.guide.map(card => {
           return (
             <Card
