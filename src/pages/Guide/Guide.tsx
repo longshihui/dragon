@@ -23,8 +23,12 @@ export default function Guide() {
         })}
       </Content>
       <Footer style={{ textAlign: 'center' }}>
-        Dragon ©2019 Created by{' '}
-        <a href="https://github.com/longshihui" target="_blank">
+        Dragon ©2019 Created by
+        <a
+          href="https://github.com/longshihui"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Long ShiHui
         </a>
       </Footer>

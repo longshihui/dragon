@@ -15,7 +15,12 @@
       "~/*": [
         "src/*"
       ]
-    }
+    },
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable"
+    ]
   },
   "include": [
     "./src/**/*"
