@@ -3,7 +3,8 @@
     {
       "id": "tool",
       "icon": "tool",
-      "title": "开发工具"
+      "title": "开发工具",
+      "pathname": "/develop-tools"
     }
   ]
 }
