@@ -12,6 +12,10 @@
 - [ ] 开发主页
 - [ ] 开发“开发者工具”功能项
 
+## 风格设计
+
+Google的[Material Design](https://material.io/design/)
+
 ## 技术栈
 
 - Electron     App基础架构
