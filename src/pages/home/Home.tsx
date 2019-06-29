@@ -1,10 +1,6 @@
-import React from 'react';
-import { Card, Icon, Layout } from 'antd';
-import styles from './Home.scss';
-import config from './config.json';
+import React, { Fragment } from 'react';
+import { Container, CssBaseline } from '@material-ui/core';
 import { RouteComponentProps } from 'react-router-dom';
-
-const { Footer, Content } = Layout;
 
 export default class Home extends React.Component<RouteComponentProps> {
   constructor(props: RouteComponentProps) {
@@ -15,33 +11,21 @@ export default class Home extends React.Component<RouteComponentProps> {
   }
   render() {
     return (
-      <Layout className={styles.layout}>
-        <Content className={styles.content}>
-          {config.guide.map(card => {
-            return (
-              <Card
-                hoverable
-                style={{ width: 240 }}
-                cover={<Icon className={styles.icon} type={card.icon} />}
-                key={card.id}
-                onClick={() => this.goTo(card.pathname)}
-              >
-                <div className={styles.title}>{card.title}</div>
-              </Card>
-            );
-          })}
-        </Content>
-        <Footer style={{ textAlign: 'center' }}>
-          Dragon ©2019 Created by{' '}
-          <a
-            href="https://github.com/longshihui"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Long ShiHui
-          </a>
-        </Footer>
-      </Layout>
+      <Fragment>
+        <CssBaseline />
+        <Container>
+          <footer>
+            Dragon ©2019 Created by{' '}
+            <a
+              href="https://github.com/longshihui"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Long ShiHui
+            </a>
+          </footer>
+        </Container>
+      </Fragment>
     );
   }
 }

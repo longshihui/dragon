@@ -1,4 +1,4 @@
-import './app.global.scss';
+import 'typeface-roboto/index.css';
 import { hot } from 'react-hot-loader/root';
 import React from 'react';
 import { render } from 'react-dom';
