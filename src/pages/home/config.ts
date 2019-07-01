@@ -15,6 +15,6 @@ export default [
     icon: createElement(styledIcon(Alarm)),
     title: '提醒器',
     description: '设置一个时间和频率，提醒你的事项',
-    'pathname:': '/timer'
+    pathname: '/timer'
   }
 ];

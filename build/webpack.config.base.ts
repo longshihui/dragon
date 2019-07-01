@@ -2,14 +2,14 @@
  * Base webpack config used across other specific configs
  */
 
-import path from "path";
-import webpack from "webpack";
-import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
-import { dependencies } from "../package.json";
+import path from 'path';
+import webpack from 'webpack';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
+import { dependencies } from '../package.json';
 
 export default {
   externals: [...Object.keys(dependencies || {})],
-  context: path.resolve(__dirname, ".."),
+  context: path.resolve(__dirname, '..'),
   module: {
     rules: [
       {
@@ -17,15 +17,15 @@ export default {
         exclude: /node_modules/,
         use: [
           {
-            loader: "babel-loader",
+            loader: 'babel-loader',
             options: {
               cacheDirectory: true
             }
           },
           {
-            loader: "ts-loader",
+            loader: 'ts-loader',
             options: {
-              configFile: path.resolve(__dirname, "..", "tsconfig.json"),
+              configFile: path.resolve(__dirname, '..', 'tsconfig.json'),
               transpileOnly: true
             }
           }
@@ -35,7 +35,7 @@ export default {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
             cacheDirectory: true
           }
@@ -45,22 +45,25 @@ export default {
   },
 
   output: {
-    path: path.join(__dirname, "..", "dist")
+    path: path.join(__dirname, '..', 'dist')
   },
 
   /**
    * Determine the array of extensions that should be used to resolve modules.
    */
   resolve: {
-    extensions: [".js", ".jsx", ".json", ".ts", ".tsx"]
+    extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
+    alias: {
+      '@': path.resolve(__dirname, '..', 'src')
+    }
   },
 
   plugins: [
     new ForkTsCheckerWebpackPlugin({
-      formatter: "codeframe"
+      formatter: 'codeframe'
     }),
     new webpack.EnvironmentPlugin({
-      NODE_ENV: "production"
+      NODE_ENV: 'production'
     })
   ]
 };
