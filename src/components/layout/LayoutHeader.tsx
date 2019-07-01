@@ -1,5 +1,5 @@
+import React, { CSSProperties, PropsWithChildren } from 'react';
 import { AppBar, Toolbar, Typography, Grid } from '@material-ui/core';
-import React, { CSSProperties } from 'react';
 import { createStyles, withStyles, WithStyles } from '@material-ui/styles';
 
 const styles = createStyles({
@@ -16,7 +16,7 @@ const appBarStyles: ElectronCSSProperties = {
   WebkitAppRegion: 'drag'
 };
 
-type LayoutHeaderProps = WithStyles<typeof styles>;
+type LayoutHeaderProps = WithStyles<typeof styles> & PropsWithChildren<{}>;
 
 export default withStyles(styles)(function LayoutHeader(
   props: LayoutHeaderProps
@@ -24,11 +24,7 @@ export default withStyles(styles)(function LayoutHeader(
   return (
     <Grid item className={props.classes.root}>
       <AppBar position="static" color="primary" style={appBarStyles}>
-        <Toolbar>
-          <Typography variant="h6" noWrap>
-            Dragon
-          </Typography>
-        </Toolbar>
+        <Toolbar>{props.children}</Toolbar>
       </AppBar>
     </Grid>
   );
