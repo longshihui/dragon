@@ -5,14 +5,16 @@ import LayoutHeader from './LayoutHeader';
 import LayoutContent from './LayoutContent';
 import LayoutFooter from './LayoutFooter';
 
-interface LayoutProps extends PropsWithChildren<{}> {}
+type LayoutProps = PropsWithChildren<{
+  header?: React.ReactNode;
+}>;
 
 export default function Layout(props: LayoutProps) {
   return (
     <Fragment>
       <CssBaseline />
       <LayoutContainer>
-        <LayoutHeader />
+        <LayoutHeader>{props.header}</LayoutHeader>
         <LayoutContent>{props.children}</LayoutContent>
         <LayoutFooter />
       </LayoutContainer>
