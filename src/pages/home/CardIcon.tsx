@@ -28,7 +28,6 @@ export { styledIcon };
 export default withStyles(styles)(function(
   props: PropsWithChildren<WithStyles<typeof styles>>
 ) {
-  console.log(props.children);
   return (
     <Typography className={props.classes.root} component="div" variant="h1">
       {props.children}
