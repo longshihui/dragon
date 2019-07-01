@@ -50,6 +50,7 @@
     "@babel/preset-react": "^7.0.0",
     "@babel/register": "^7.4.0",
     "@colorless/release-script": "^1.0.1",
+    "@hot-loader/react-dom": "^16.8.6",
     "@types/electron": "^1.6.10",
     "@types/electron-devtools-installer": "^2.2.0",
     "@types/friendly-errors-webpack-plugin": "^0.1.1",
