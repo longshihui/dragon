@@ -9,7 +9,7 @@ import {
 import { RouteComponentProps } from 'react-router-dom';
 import classes from './Home.scss';
 import CardIcon from './CardIcon';
-import config from './config';
+import config from '@/AppConfig';
 import { Layout } from '@/components';
 
 export default class Home extends React.Component<RouteComponentProps> {
