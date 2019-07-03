@@ -10,16 +10,17 @@ const App = hot(function() {
   return (
     <Router>
       <Switch>
+        <Route path="/" exact component={Home} />
         {AppConfig.map(config => {
           return (
             <Route
-              path={config.pathname}
+              path={config.path}
               component={config.component}
+              exact={config.exact}
               key={config.id}
             />
           );
         })}
-        <Route component={Home} />
       </Switch>
     </Router>
   );

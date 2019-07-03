@@ -26,7 +26,7 @@ export default class Home extends React.Component<RouteComponentProps> {
           {config.map(c => {
             return (
               <Grid item xs={4} key={c.id}>
-                <Card onClick={() => this.goTo(c.pathname)}>
+                <Card onClick={() => this.goTo(c.path)}>
                   <CardActionArea href="javascript:;">
                     <CardContent>
                       <CardIcon>{c.icon}</CardIcon>
