@@ -1,5 +1,4 @@
 import React, { PropsWithChildren } from 'react';
-import { SvgIcon } from '@material-ui/core';
 import { createStyles, WithStyles, withStyles } from '@material-ui/styles';
 import { Typography } from '@material-ui/core';
 
@@ -8,22 +7,6 @@ const styles = createStyles({
     textAlign: 'center'
   }
 });
-
-const iconStyles = createStyles({
-  root: {
-    fontSize: '1em'
-  }
-});
-
-function styledIcon(Icon: typeof SvgIcon) {
-  return withStyles(iconStyles)(function(
-    props: PropsWithChildren<WithStyles<typeof iconStyles>>
-  ) {
-    return <Icon className={props.classes.root} />;
-  });
-}
-
-export { styledIcon };
 
 export default withStyles(styles)(function(
   props: PropsWithChildren<WithStyles<typeof styles>>
