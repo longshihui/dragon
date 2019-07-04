@@ -15,6 +15,7 @@ import ElectronDevtoolsInstaller, {
   REACT_DEVELOPER_TOOLS,
   REDUX_DEVTOOLS
 } from 'electron-devtools-installer';
+import IPC from '@/modules/ipc';
 
 let mainWindow = null;
 
@@ -58,6 +59,7 @@ app.on('window-all-closed', () => {
 });
 
 app.on('ready', async () => {
+  IPC.register();
   if (
     process.env.NODE_ENV === 'development' ||
     process.env.DEBUG_PROD === 'true'
