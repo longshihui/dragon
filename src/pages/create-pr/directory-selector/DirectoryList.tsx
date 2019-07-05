@@ -5,19 +5,25 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  Paper
+  Card,
+  CardHeader,
+  Divider
 } from '@material-ui/core';
 import { createStyles, WithStyles, withStyles } from '@material-ui/styles';
 
 const styles = createStyles({
   list: {
     width: 200,
-    height: 300,
+    height: 230,
     overflow: 'auto'
+  },
+  cardContent: {
+    padding: 0
   }
 });
 
 export interface DirectoryListProps extends WithStyles<typeof styles> {
+  title: string;
   directoryList: string[];
   checkedDirectoryList: string[];
   onAddChecked: (value: string) => void;
@@ -31,6 +37,7 @@ function isChecked(list: string[], value: string) {
 class DirectoryList extends React.Component<DirectoryListProps, {}> {
   render() {
     const {
+      title,
       directoryList,
       classes,
       onAddChecked,
@@ -40,12 +47,13 @@ class DirectoryList extends React.Component<DirectoryListProps, {}> {
 
     function handleChange(value: string) {
       let checked = !isChecked(checkedDirectoryList, value);
-      console.log(checked);
       checked ? onAddChecked(value) : onRemoveChecked(value);
     }
 
     return (
-      <Paper>
+      <Card>
+        <CardHeader title={title} />
+        <Divider component="div" />
         <List dense component="ul" role="list" className={classes.list}>
           {directoryList.map(value => {
             const labelId = `transfer-list-item-${value}-label`;
@@ -72,7 +80,7 @@ class DirectoryList extends React.Component<DirectoryListProps, {}> {
             );
           })}
         </List>
-      </Paper>
+      </Card>
     );
   }
 }
