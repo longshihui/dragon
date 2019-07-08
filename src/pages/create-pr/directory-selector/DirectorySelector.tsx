@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import DirectoryList from './DirectoryList';
 import DirectorySelectorActions from './DirectorySelectorActions';
 import DirectoryAdd from './DirectoryAdd';
@@ -122,59 +122,68 @@ export default class DirectorySelector extends React.Component<
   }
   render() {
     return (
-      <Grid container spacing={2} justify="center" alignItems="center">
+      <Grid container spacing={2} direction="column" alignItems="center">
         <Grid item>
-          <DirectoryList
-            title="未选择"
-            directoryList={this.state.unselectedList}
-            checkedDirectoryList={this.state.checkedUnselectedList}
-            onAddChecked={value => {
-              this.addCheckedUnselectedList(value);
-            }}
-            onRemoveChecked={value => {
-              this.removeValueFromCheckedUnselectedList(value);
-            }}
-          />
+          <Typography component="p" variant="body2">
+            选择要创建的文件夹
+          </Typography>
         </Grid>
         <Grid item>
-          <DirectorySelectorActions
-            onSelectDirectory={() => this.onSelectDirectory()}
-            onCancelSelectDirectory={() => this.onCancelSelectDirectory()}
-            onAddDirectory={() => this.onAddDirectory()}
-            onDeleteDirectory={() => this.onDeleteDirectory()}
-          />
+          <Grid container spacing={2} justify="center" alignItems="center">
+            <Grid item>
+              <DirectoryList
+                title="未选择"
+                directoryList={this.state.unselectedList}
+                checkedDirectoryList={this.state.checkedUnselectedList}
+                onAddChecked={value => {
+                  this.addCheckedUnselectedList(value);
+                }}
+                onRemoveChecked={value => {
+                  this.removeValueFromCheckedUnselectedList(value);
+                }}
+              />
+            </Grid>
+            <Grid item>
+              <DirectorySelectorActions
+                onSelectDirectory={() => this.onSelectDirectory()}
+                onCancelSelectDirectory={() => this.onCancelSelectDirectory()}
+                onAddDirectory={() => this.onAddDirectory()}
+                onDeleteDirectory={() => this.onDeleteDirectory()}
+              />
+            </Grid>
+            <Grid item>
+              <DirectoryList
+                title="将要创建"
+                directoryList={this.props.createDirectoryList}
+                checkedDirectoryList={this.state.checkedSelectedList}
+                onAddChecked={value => {
+                  this.addCheckedSelectedList(value);
+                }}
+                onRemoveChecked={value => {
+                  this.removeValueFromCheckedSelectedList(value);
+                }}
+              />
+            </Grid>
+            <DirectoryAdd
+              open={this.state.openAddDirectoryDialog}
+              directoryList={this.props.directoryList}
+              onAdd={newDirectory => {
+                this.setState(state => {
+                  return {
+                    unselectedList: state.unselectedList.concat(newDirectory)
+                  };
+                });
+              }}
+              onClose={() => {
+                this.setState(() => {
+                  return {
+                    openAddDirectoryDialog: false
+                  };
+                });
+              }}
+            />
+          </Grid>
         </Grid>
-        <Grid item>
-          <DirectoryList
-            title="将要创建"
-            directoryList={this.props.createDirectoryList}
-            checkedDirectoryList={this.state.checkedSelectedList}
-            onAddChecked={value => {
-              this.addCheckedSelectedList(value);
-            }}
-            onRemoveChecked={value => {
-              this.removeValueFromCheckedSelectedList(value);
-            }}
-          />
-        </Grid>
-        <DirectoryAdd
-          open={this.state.openAddDirectoryDialog}
-          directoryList={this.props.directoryList}
-          onAdd={newDirectory => {
-            this.setState(state => {
-              return {
-                unselectedList: state.unselectedList.concat(newDirectory)
-              };
-            });
-          }}
-          onClose={() => {
-            this.setState(() => {
-              return {
-                openAddDirectoryDialog: false
-              };
-            });
-          }}
-        />
       </Grid>
     );
   }
