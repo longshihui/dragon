@@ -40,7 +40,7 @@ class ParentDirectorySelector extends React.Component<
   }
   render() {
     return (
-      <Grid container alignItems="center">
+      <Grid item container alignItems="center">
         <Grid item className={this.props.classes.input}>
           <TextField
             label="需求存放目录"

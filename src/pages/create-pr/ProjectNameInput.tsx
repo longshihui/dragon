@@ -19,7 +19,7 @@ interface ProjectNameInputProps extends WithStyles<typeof styles> {
 class ProjectNameInput extends React.Component<ProjectNameInputProps, {}> {
   render() {
     return (
-      <Grid container alignItems="center">
+      <Grid item container alignItems="center">
         <Grid item className={this.props.classes.input}>
           <TextField
             label="新需求名字"
