@@ -1,11 +1,8 @@
 import React from 'react';
 import Layout from '@/components/layout';
-import { TextField, Fab, Grid, Typography } from '@material-ui/core';
-import { Folder } from '@material-ui/icons';
 import { createStyles, WithStyles, withStyles } from '@material-ui/styles';
-import { ipcRenderer } from 'electron';
-import { isString } from 'lodash';
-import { IPCEvents } from '@/modules/ipc/create-pr';
+import ParentDirectorySelector from './ParentDirectorySelector';
+import ProjectNameInput from './ProjectNameInput';
 import DirectorySelector from './directory-selector';
 
 const styles = createStyles({
@@ -30,6 +27,7 @@ interface CreatePRProps extends WithStyles<typeof styles> {}
 
 interface CreatePRState {
   selectedDirectory: string;
+  projectName: string;
   createDirectoryList: string[];
 }
 
@@ -48,21 +46,16 @@ class CreatePR extends React.Component<CreatePRProps, CreatePRState> {
     super(props);
     this.state = {
       selectedDirectory: '',
+      projectName: '',
       createDirectoryList: DEFAULT_CREATE_DIR_LIST
     };
   }
-  async selectDirectory() {
-    ipcRenderer.once(IPCEvents.SELECT_DIRECTORY, (event, directoryPath) => {
-      if (!isString(directoryPath)) {
-        return;
-      }
-      this.setState(() => {
-        return {
-          selectedDirectory: directoryPath
-        };
-      });
+  changeSelectedDirectory(newDirectory) {
+    this.setState(() => {
+      return {
+        selectedDirectory: newDirectory
+      };
     });
-    ipcRenderer.send(IPCEvents.SELECT_DIRECTORY);
   }
   changeCreateDirectoryList(newList) {
     this.setState(() => {
@@ -72,60 +65,25 @@ class CreatePR extends React.Component<CreatePRProps, CreatePRState> {
     });
   }
   render() {
-    const { selectedDirectory } = this.state;
-    const props = this.props;
     return (
       <Layout>
-        <Grid container alignItems="center" className={props.classes.row}>
-          <Grid item className={props.classes.input}>
-            <TextField
-              label="需求存放目录"
-              placeholder="选择一个路径"
-              fullWidth
-              variant="outlined"
-              value={selectedDirectory}
-              InputLabelProps={{
-                shrink: true
-              }}
-              InputProps={{
-                readOnly: true
-              }}
-            />
-          </Grid>
-          <Grid item className={props.classes.iconButton}>
-            <Fab href="" color="primary" onClick={() => this.selectDirectory()}>
-              <Folder />
-            </Fab>
-          </Grid>
-        </Grid>
-        <Grid container alignItems="center" className={props.classes.row}>
-          <Grid item className={props.classes.input}>
-            <TextField
-              label="新需求名字"
-              placeholder="请输入需求名字"
-              fullWidth
-              margin="normal"
-              variant="outlined"
-              InputLabelProps={{
-                shrink: true
-              }}
-            />
-          </Grid>
-        </Grid>
-        <Grid container spacing={2} direction="column" alignItems="center">
-          <Grid item>
-            <Typography component="p" variant="body2">
-              选择要创建的文件夹
-            </Typography>
-          </Grid>
-          <Grid item>
-            <DirectorySelector
-              directoryList={DEFAULT_CREATE_DIR_LIST}
-              createDirectoryList={this.state.createDirectoryList}
-              onChange={newList => this.changeCreateDirectoryList(newList)}
-            />
-          </Grid>
-        </Grid>
+        <ParentDirectorySelector
+          selectedDirectory={this.state.selectedDirectory}
+          onChange={newDirectory => this.changeSelectedDirectory(newDirectory)}
+        />
+        <ProjectNameInput
+          projectName={this.state.projectName}
+          onChange={value => {
+            this.setState({
+              projectName: value
+            });
+          }}
+        />
+        <DirectorySelector
+          directoryList={DEFAULT_CREATE_DIR_LIST}
+          createDirectoryList={this.state.createDirectoryList}
+          onChange={newList => this.changeCreateDirectoryList(newList)}
+        />
       </Layout>
     );
   }
