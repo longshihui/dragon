@@ -1,16 +1,9 @@
 import React from 'react';
-import {
-  Grid,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  DialogContentText
-} from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import DirectoryList from './DirectoryList';
 import DirectorySelectorActions from './DirectorySelectorActions';
 import DirectoryAdd from './DirectoryAdd';
+import { Confirm } from '@/components';
 
 export interface DirectorySelectorProps {
   directoryList: string[];
@@ -22,7 +15,6 @@ export interface DirectorySelectorState {
   unselectedList: string[];
   checkedSelectedList: string[];
   checkedUnselectedList: string[];
-  openConfirmDeleteDialog: boolean;
 }
 
 function remove(list: string[], value: string) {
@@ -40,8 +32,7 @@ export default class DirectorySelector extends React.Component<
       unselectedList: [],
       checkedSelectedList: [],
       checkedUnselectedList: [],
-      openAddDirectoryDialog: false,
-      openConfirmDeleteDialog: false
+      openAddDirectoryDialog: false
     };
   }
   // 添加已选择列表的勾选项
@@ -106,7 +97,10 @@ export default class DirectorySelector extends React.Component<
       };
     });
   }
-  onDeleteDirectory() {
+  async onDeleteDirectory() {
+    if (!(await Confirm('确认删除？'))) {
+      return;
+    }
     const deleteList = this.state.checkedSelectedList.concat(
       this.state.checkedUnselectedList
     );
@@ -119,8 +113,7 @@ export default class DirectorySelector extends React.Component<
           val => !deleteList.includes(val)
         ),
         checkedSelectedList: [],
-        checkedUnselectedList: [],
-        openConfirmDeleteDialog: false
+        checkedUnselectedList: []
       };
     });
   }
@@ -145,13 +138,7 @@ export default class DirectorySelector extends React.Component<
             onSelectDirectory={() => this.onSelectDirectory()}
             onCancelSelectDirectory={() => this.onCancelSelectDirectory()}
             onAddDirectory={() => this.onAddDirectory()}
-            onDeleteDirectory={() =>
-              this.setState(() => {
-                return {
-                  openConfirmDeleteDialog: true
-                };
-              })
-            }
+            onDeleteDirectory={() => this.onDeleteDirectory()}
           />
         </Grid>
         <Grid item>
@@ -185,40 +172,6 @@ export default class DirectorySelector extends React.Component<
             });
           }}
         />
-        <Dialog
-          open={this.state.openConfirmDeleteDialog}
-          fullWidth
-          maxWidth="sm"
-        >
-          <DialogTitle>提示</DialogTitle>
-          <DialogContent>
-            <DialogContentText>确认删除吗？</DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button
-              href=""
-              variant="contained"
-              color="secondary"
-              onClick={() => {
-                this.setState(() => {
-                  return {
-                    openConfirmDeleteDialog: false
-                  };
-                });
-              }}
-            >
-              再想想
-            </Button>
-            <Button
-              href=""
-              variant="contained"
-              color="primary"
-              onClick={() => this.onDeleteDirectory()}
-            >
-              确认
-            </Button>
-          </DialogActions>
-        </Dialog>
       </Grid>
     );
   }
