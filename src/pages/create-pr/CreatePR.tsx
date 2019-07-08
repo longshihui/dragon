@@ -30,6 +30,7 @@ interface CreatePRProps extends WithStyles<typeof styles> {}
 
 interface CreatePRState {
   selectedDirectory: string;
+  createDirectoryList: string[];
 }
 
 // TODO 从配置用户配置文件里读取
@@ -46,7 +47,8 @@ class CreatePR extends React.Component<CreatePRProps, CreatePRState> {
   constructor(props) {
     super(props);
     this.state = {
-      selectedDirectory: ''
+      selectedDirectory: '',
+      createDirectoryList: DEFAULT_CREATE_DIR_LIST
     };
   }
   async selectDirectory() {
@@ -61,6 +63,13 @@ class CreatePR extends React.Component<CreatePRProps, CreatePRState> {
       });
     });
     ipcRenderer.send(IPCEvents.SELECT_DIRECTORY);
+  }
+  changeCreateDirectoryList(newList) {
+    this.setState(() => {
+      return {
+        createDirectoryList: newList
+      };
+    });
   }
   render() {
     const { selectedDirectory } = this.state;
@@ -110,7 +119,11 @@ class CreatePR extends React.Component<CreatePRProps, CreatePRState> {
             </Typography>
           </Grid>
           <Grid item>
-            <DirectorySelector directoryList={DEFAULT_CREATE_DIR_LIST} />
+            <DirectorySelector
+              directoryList={DEFAULT_CREATE_DIR_LIST}
+              createDirectoryList={this.state.createDirectoryList}
+              onChange={newList => this.changeCreateDirectoryList(newList)}
+            />
           </Grid>
         </Grid>
       </Layout>
