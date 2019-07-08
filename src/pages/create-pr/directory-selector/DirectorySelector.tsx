@@ -122,7 +122,7 @@ export default class DirectorySelector extends React.Component<
   }
   render() {
     return (
-      <Grid container spacing={2} direction="column" alignItems="center">
+      <Grid item container spacing={2} direction="column" alignItems="center">
         <Grid item>
           <Typography component="p" variant="body2">
             选择要创建的文件夹
