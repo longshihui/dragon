@@ -7,11 +7,12 @@ import { Confirm } from '@/components';
 
 export interface DirectorySelectorProps {
   directoryList: string[];
+  createDirectoryList: string[];
+  onChange: (changedList: string[]) => void;
 }
 
 export interface DirectorySelectorState {
   openAddDirectoryDialog: boolean;
-  selectedList: string[];
   unselectedList: string[];
   checkedSelectedList: string[];
   checkedUnselectedList: string[];
@@ -28,7 +29,6 @@ export default class DirectorySelector extends React.Component<
   constructor(props: DirectorySelectorProps) {
     super(props);
     this.state = {
-      selectedList: props.directoryList,
       unselectedList: [],
       checkedSelectedList: [],
       checkedUnselectedList: [],
@@ -68,24 +68,27 @@ export default class DirectorySelector extends React.Component<
     });
   }
   onSelectDirectory() {
+    this.props.onChange(
+      this.props.createDirectoryList.concat(this.state.checkedUnselectedList)
+    );
     this.setState(state => {
       return {
         unselectedList: state.unselectedList.filter(
           dir => !state.checkedUnselectedList.includes(dir)
         ),
-        selectedList: state.selectedList.concat(state.checkedUnselectedList),
         checkedUnselectedList: []
       };
     });
   }
   onCancelSelectDirectory() {
-    console.log('call');
+    this.props.onChange(
+      this.props.createDirectoryList.filter(
+        dir => !this.state.checkedSelectedList.includes(dir)
+      )
+    );
     this.setState(state => {
       return {
         unselectedList: state.unselectedList.concat(state.checkedSelectedList),
-        selectedList: state.selectedList.filter(
-          dir => !state.checkedSelectedList.includes(dir)
-        ),
         checkedSelectedList: []
       };
     });
@@ -104,11 +107,11 @@ export default class DirectorySelector extends React.Component<
     const deleteList = this.state.checkedSelectedList.concat(
       this.state.checkedUnselectedList
     );
+    this.props.onChange(
+      this.props.createDirectoryList.filter(val => !deleteList.includes(val))
+    );
     this.setState(state => {
       return {
-        selectedList: state.selectedList.filter(
-          val => !deleteList.includes(val)
-        ),
         unselectedList: state.unselectedList.filter(
           val => !deleteList.includes(val)
         ),
@@ -144,7 +147,7 @@ export default class DirectorySelector extends React.Component<
         <Grid item>
           <DirectoryList
             title="将要创建"
-            directoryList={this.state.selectedList}
+            directoryList={this.props.createDirectoryList}
             checkedDirectoryList={this.state.checkedSelectedList}
             onAddChecked={value => {
               this.addCheckedSelectedList(value);
