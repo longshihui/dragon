@@ -8,7 +8,7 @@ import { Button, Grid } from '@material-ui/core';
 import Validator from 'async-validator';
 import fs from 'fs';
 import path from 'path';
-import { Alert } from '@/components';
+import { Alert, Loading } from '@/components';
 import { promisify } from 'util';
 
 const mkdir = promisify(fs.mkdir);
@@ -37,6 +37,7 @@ interface CreatePRState {
   selectedDirectory: string;
   projectName: string;
   createDirectoryList: string[];
+  isCreating: boolean;
 }
 
 // TODO 从配置用户配置文件里读取
@@ -55,7 +56,8 @@ class CreatePR extends React.Component<CreatePRProps, CreatePRState> {
     this.state = {
       selectedDirectory: '',
       projectName: '',
-      createDirectoryList: DEFAULT_CREATE_DIR_LIST
+      createDirectoryList: DEFAULT_CREATE_DIR_LIST,
+      isCreating: false
     };
   }
   changeSelectedDirectory(newDirectory) {
@@ -119,6 +121,9 @@ class CreatePR extends React.Component<CreatePRProps, CreatePRState> {
     if (!(await this.validate())) {
       return;
     }
+    this.setState({
+      isCreating: true
+    });
     try {
       const projectPath = path.resolve(
         this.state.selectedDirectory,
@@ -134,6 +139,10 @@ class CreatePR extends React.Component<CreatePRProps, CreatePRState> {
       Alert('创建成功');
     } catch (e) {
       Alert(e.message);
+    } finally {
+      this.setState({
+        isCreating: false
+      });
     }
   }
   render() {
@@ -161,15 +170,21 @@ class CreatePR extends React.Component<CreatePRProps, CreatePRState> {
           />
           <Grid item container justify="center">
             <Grid item>
-              <Button
-                variant="contained"
-                href=""
-                color="primary"
-                size="large"
-                onClick={() => this.handleSubmit()}
+              <Loading
+                isLoading={this.state.isCreating}
+                progressProps={{ size: 20 }}
               >
-                创建项目
-              </Button>
+                <Button
+                  variant="contained"
+                  href=""
+                  color="primary"
+                  size="large"
+                  disabled={this.state.isCreating}
+                  onClick={() => this.handleSubmit()}
+                >
+                  创建项目
+                </Button>
+              </Loading>
             </Grid>
           </Grid>
         </Grid>
