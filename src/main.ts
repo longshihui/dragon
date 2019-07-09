@@ -71,7 +71,7 @@ app.on('ready', async () => {
     show: true,
     width: 1024,
     height: 728,
-    titleBarStyle: 'hidden',
+    titleBarStyle: 'hiddenInset',
     webPreferences: {
       nodeIntegration: true
     }

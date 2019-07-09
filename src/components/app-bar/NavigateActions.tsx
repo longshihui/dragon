@@ -6,7 +6,7 @@ import { withRouter, RouteComponentProps, match } from 'react-router';
 
 const styles = createStyles({
   root: {
-    marginLeft: process.platform === 'darwin' ? 40 : 0
+    marginLeft: process.platform === 'darwin' ? 50 : 0
   }
 });
 
