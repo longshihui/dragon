@@ -100,19 +100,25 @@ class CreatePR extends React.Component<CreatePRProps, CreatePRState> {
         callback(error);
       },
       // 校验项目名字是否已存在
-      projectName(rule, projectName, callback, source) {
-        const error = [];
-        if (fs.existsSync(source.selectedDirectory)) {
-          const projectPath = path.resolve(
-            source.selectedDirectory,
-            './',
-            projectName
-          );
-          if (fs.existsSync(projectPath)) {
-            error.push(new Error('项目: ' + projectName + ' 已存在'));
+      projectName: {
+        required: true,
+        validator(rule, projectName, callback, source) {
+          const error = [];
+          if (projectName.trim() === '') {
+            error.push(new Error('项目名称不能为空'));
           }
+          if (fs.existsSync(source.selectedDirectory)) {
+            const projectPath = path.resolve(
+              source.selectedDirectory,
+              './',
+              projectName
+            );
+            if (fs.existsSync(projectPath)) {
+              error.push(new Error('项目: ' + projectName + ' 已存在'));
+            }
+          }
+          callback(error);
         }
-        callback(error);
       },
       // 校验创建的目录列表是否为空
       createDirectoryList(rule, list, callback) {
