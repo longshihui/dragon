@@ -10,6 +10,7 @@ import fs from 'fs';
 import path from 'path';
 import { Alert, Loading } from '@/components';
 import { promisify } from 'util';
+import { getDataBase } from '@/modules/user-data';
 
 const mkdir = promisify(fs.mkdir);
 
@@ -60,12 +61,25 @@ class CreatePR extends React.Component<CreatePRProps, CreatePRState> {
       isCreating: false
     };
   }
-  changeSelectedDirectory(newDirectory) {
+  async componentWillMount() {
+    await this.init();
+  }
+
+  async init() {
+    const db = await getDataBase();
+    const { storageDir } = db.get('create-pr').value();
+    this.setState({
+      selectedDirectory: storageDir
+    });
+  }
+  async changeSelectedDirectory(newDirectory) {
     this.setState(() => {
       return {
         selectedDirectory: newDirectory
       };
     });
+    const db = await getDataBase();
+    await db.set('create-pr', { storageDir: newDirectory }).write();
   }
   changeCreateDirectoryList(newList) {
     this.setState(() => {
@@ -74,8 +88,10 @@ class CreatePR extends React.Component<CreatePRProps, CreatePRState> {
       };
     });
   }
+  // 校验提交内容
   async validate() {
     const validator = new Validator({
+      // 校验存放目录是否为存在
       selectedDirectory(rule, value, callback) {
         const error = [];
         if (!fs.existsSync(value)) {
@@ -83,6 +99,7 @@ class CreatePR extends React.Component<CreatePRProps, CreatePRState> {
         }
         callback(error);
       },
+      // 校验项目名字是否已存在
       projectName(rule, projectName, callback, source) {
         const error = [];
         if (fs.existsSync(source.selectedDirectory)) {
@@ -97,6 +114,7 @@ class CreatePR extends React.Component<CreatePRProps, CreatePRState> {
         }
         callback(error);
       },
+      // 校验创建的目录列表是否为空
       createDirectoryList(rule, list, callback) {
         const error = [];
         if (list.length === 0) {

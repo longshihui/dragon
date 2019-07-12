@@ -24,8 +24,7 @@ export default [
     id: 'create-pr',
     icon: createElement(styledIcon(Edit)),
     title: '创建需求',
-    description:
-      '工作需要，创建一个次需求，自动生成需求的目录结构以及模板，减少重复性劳动',
+    description: '生成一次需求所需的目录模板',
     path: '/create-pr',
     exact: true,
     component: CreatePR
