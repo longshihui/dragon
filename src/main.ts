@@ -59,6 +59,10 @@ app.on('window-all-closed', () => {
 });
 
 app.on('ready', async () => {
+  await main();
+});
+
+async function main() {
   IPC.register();
   if (
     process.env.NODE_ENV === 'development' ||
@@ -105,4 +109,4 @@ app.on('ready', async () => {
   mainWindow.on('closed', () => {
     mainWindow = null;
   });
-});
+}
