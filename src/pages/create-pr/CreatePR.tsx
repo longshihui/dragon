@@ -93,7 +93,7 @@ class CreatePR extends React.Component<CreatePRProps, CreatePRState> {
         selectedDirectory: newDirectory
       };
     });
-    await db.set(DATABASE_KEY, { storageDir: newDirectory }).write();
+    db.set(`${DATABASE_KEY}.storageDir`, newDirectory).write();
   }
   changeCreateDirectoryList(newList) {
     this.setState(() => {
