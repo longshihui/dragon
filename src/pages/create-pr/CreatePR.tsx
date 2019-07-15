@@ -10,9 +10,11 @@ import fs from 'fs';
 import path from 'path';
 import { Alert, Loading } from '@/components';
 import { promisify } from 'util';
-import { getDataBase } from '@/modules/user-data';
+import DataBase from '@/modules/user-data';
+import { remote } from 'electron';
 
 const mkdir = promisify(fs.mkdir);
+const DATABASE_KEY = 'create-pr';
 
 const styles = createStyles({
   row: {
@@ -35,21 +37,17 @@ const styles = createStyles({
 interface CreatePRProps extends WithStyles<typeof styles> {}
 
 interface CreatePRState {
+  // 选择的存放目录
   selectedDirectory: string;
+  // 项目名
   projectName: string;
+  // 目录列表
+  directoryList: string[];
+  // 最终要创建的目录列表
   createDirectoryList: string[];
+  // 是否正在创建
   isCreating: boolean;
 }
-
-// TODO 从配置用户配置文件里读取
-const DEFAULT_CREATE_DIR_LIST = [
-  '需求文档',
-  'UI资源',
-  '后端技术文档',
-  '前端技术文档',
-  '测试用例',
-  '其他'
-];
 
 class CreatePR extends React.Component<CreatePRProps, CreatePRState> {
   constructor(props) {
@@ -57,7 +55,8 @@ class CreatePR extends React.Component<CreatePRProps, CreatePRState> {
     this.state = {
       selectedDirectory: '',
       projectName: '',
-      createDirectoryList: DEFAULT_CREATE_DIR_LIST,
+      directoryList: [],
+      createDirectoryList: [],
       isCreating: false
     };
   }
@@ -66,20 +65,35 @@ class CreatePR extends React.Component<CreatePRProps, CreatePRState> {
   }
 
   async init() {
-    const db = await getDataBase();
-    const { storageDir } = db.get('create-pr').value();
+    await DataBase.defaults(DATABASE_KEY, {
+      storageDir: remote.app.getPath('documents'),
+      createDirList: [
+        '需求文档',
+        'UI资源',
+        '后端技术文档',
+        '前端技术文档',
+        '测试用例',
+        '其他'
+      ]
+    });
+    // 链接到数据库
+    const db = await DataBase.connect();
+
+    const { storageDir, createDirList } = db.get(DATABASE_KEY).value();
     this.setState({
-      selectedDirectory: storageDir
+      selectedDirectory: storageDir,
+      directoryList: createDirList,
+      createDirectoryList: createDirList
     });
   }
   async changeSelectedDirectory(newDirectory) {
+    const db = await DataBase.connect();
     this.setState(() => {
       return {
         selectedDirectory: newDirectory
       };
     });
-    const db = await getDataBase();
-    await db.set('create-pr', { storageDir: newDirectory }).write();
+    await db.set(DATABASE_KEY, { storageDir: newDirectory }).write();
   }
   changeCreateDirectoryList(newList) {
     this.setState(() => {
@@ -135,8 +149,7 @@ class CreatePR extends React.Component<CreatePRProps, CreatePRState> {
       });
     });
     if (validateResult) {
-      console.log(validateResult);
-      Alert(validateResult[0].message);
+      await Alert(validateResult[0].message);
       return false;
     }
     return true;
@@ -160,9 +173,9 @@ class CreatePR extends React.Component<CreatePRProps, CreatePRState> {
           return mkdir(path.resolve(projectPath, './', directoryName));
         })
       );
-      Alert('创建成功');
+      await Alert('创建成功');
     } catch (e) {
-      Alert(e.message);
+      await Alert(e.message);
     } finally {
       this.setState({
         isCreating: false
@@ -188,7 +201,7 @@ class CreatePR extends React.Component<CreatePRProps, CreatePRState> {
             }}
           />
           <DirectorySelector
-            directoryList={DEFAULT_CREATE_DIR_LIST}
+            directoryList={this.state.directoryList}
             createDirectoryList={this.state.createDirectoryList}
             onChange={newList => this.changeCreateDirectoryList(newList)}
           />

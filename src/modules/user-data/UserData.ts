@@ -1,15 +1,34 @@
 import path from 'path';
 import lowdb from 'lowdb';
 import FileAsync from 'lowdb/adapters/FileAsync';
-
+import { app, remote } from 'electron';
+import fs from 'fs';
+import { warn } from '@/modules/utils';
+// 持久化数据文件名
 const USER_DATA_NAME = 'Dragon.json';
-const USER_DATA_PATH = path.resolve(process.env.HOME, USER_DATA_NAME);
+// 持久化数据存放路径
+const USER_DATA_PATH =
+  process.type === 'main'
+    ? app.getPath('userData')
+    : remote.app.getPath('userData');
 
-let adpater = new FileAsync(USER_DATA_PATH);
-const db = lowdb(adpater);
-
-async function getDataBase() {
-  return await db;
+if (!fs.existsSync(USER_DATA_PATH)) {
+  fs.mkdirSync(USER_DATA_PATH);
 }
 
-export { getDataBase };
+warn('持久化数据存放路径', USER_DATA_PATH);
+
+let adapter = new FileAsync(path.resolve(USER_DATA_PATH, './', USER_DATA_NAME));
+const Database = lowdb(adapter);
+
+export default {
+  async connect() {
+    return Database;
+  },
+  async defaults(key, value) {
+    const db = await this.connect();
+    if (!db.has(key).value()) {
+      db.set(key, value).write();
+    }
+  }
+};
