@@ -4,20 +4,20 @@ import { createStyles, withStyles, WithStyles } from '@material-ui/styles';
 import AppBar from '@/components/app-bar';
 
 const styles = createStyles({
-  root: {
-    marginBottom: 20,
-    WebkitAppRegion: 'drag'
-  }
+    root: {
+        marginBottom: 20,
+        WebkitAppRegion: 'drag'
+    }
 });
 
 type LayoutHeaderProps = WithStyles<typeof styles> & PropsWithChildren<{}>;
 
 export default withStyles(styles)(function LayoutHeader(
-  props: LayoutHeaderProps
+    props: LayoutHeaderProps
 ) {
-  return (
-    <Grid item className={props.classes.root}>
-      <AppBar>{props.children}</AppBar>
-    </Grid>
-  );
+    return (
+        <Grid item className={props.classes.root}>
+            <AppBar>{props.children}</AppBar>
+        </Grid>
+    );
 });
