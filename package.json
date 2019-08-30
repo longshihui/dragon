@@ -13,7 +13,7 @@
     "preinstall": "ts-node build/utils/CheckYarn.ts",
     "prestart": "yarn build",
     "start": "cross-env NODE_ENV=production electron ./dist/main.js",
-    "prettier": "prettier --write ./src/**/*.{js,jsx,ts,tsx,scss,css}",
+    "prettier": "prettier --write \"./src/**/*.{js,jsx,ts,tsx,scss,css}\"",
     "lint": "eslint --fix './src/**/*.{js,jsx,ts,tsx}'"
   },
   "repository": {
