@@ -1,18 +1,39 @@
 import React from 'react';
-import { AppBar as MaterialAppBar, Grid, Toolbar } from '@material-ui/core';
+import {
+    AppBar as MaterialAppBar,
+    Grid,
+    Toolbar,
+    Typography
+} from '@material-ui/core';
 import NavigateActions from './NavigateActions';
+import { withStyles, createStyles, WithStyles } from '@material-ui/styles';
+import logoImage from './logo.svg';
 
-export default class AppBar extends React.Component {
-    render() {
-        return (
-            <MaterialAppBar position="static" color="primary">
-                <Toolbar>
-                    <Grid container justify="space-between">
-                        <NavigateActions />
-                        <Grid item>{this.props.children}</Grid>
-                    </Grid>
-                </Toolbar>
-            </MaterialAppBar>
-        );
+const styles = createStyles({
+    logo: {
+        marginRight: 10,
+        width: 48,
+        height: 48,
+        background: `url(${logoImage}) center no-repeat`,
+        backgroundSize: '300%',
+        color: '#ffffff'
     }
-}
+});
+
+export default withStyles(styles)(
+    class AppBar extends React.Component<WithStyles<typeof styles>, {}> {
+        render() {
+            return (
+                <MaterialAppBar position="static" color="primary">
+                    <Toolbar>
+                        <div className={this.props.classes.logo}></div>
+                        <Typography variant="h6">Dragon</Typography>
+                        <Grid container justify="space-between">
+                            <NavigateActions />
+                        </Grid>
+                    </Toolbar>
+                </MaterialAppBar>
+            );
+        }
+    }
+);
