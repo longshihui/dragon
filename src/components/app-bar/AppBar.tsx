@@ -8,6 +8,7 @@ import {
 import NavigateActions from './NavigateActions';
 import { withStyles, createStyles, WithStyles } from '@material-ui/styles';
 import logoImage from './logo.svg';
+import SettingButton from './SettingButton';
 
 const styles = createStyles({
     logo: {
@@ -29,7 +30,12 @@ export default withStyles(styles)(
                         <div className={this.props.classes.logo}></div>
                         <Typography variant="h6">Dragon</Typography>
                         <Grid container justify="space-between">
-                            <NavigateActions />
+                            <Grid item>
+                                <NavigateActions />
+                            </Grid>
+                            <Grid item>
+                                <SettingButton />
+                            </Grid>
                         </Grid>
                     </Toolbar>
                 </MaterialAppBar>
