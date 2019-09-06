@@ -10,15 +10,23 @@ const styles = createStyles({
         display: 'flex',
         background: '#ffffff',
         padding: 5,
-        boxShadow: '0px 0px 5px 2px rgba(0, 0, 0, .2)',
-        cursor: 'pointer'
+        boxShadow: '0px 0px 4px 1px rgba(0, 0, 0, .2)',
+        cursor: 'pointer',
+        transition: '.3s box-shadow ease',
+        '&:hover': {
+            boxShadow: '0px 0px 6px 4px rgba(0, 0, 0, .2)'
+        },
+        '&:hover $iconWrapper': {
+            fontSize: 48
+        }
     },
     iconWrapper: {
         flex: 1,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        fontSize: 32
+        fontSize: 32,
+        transition: '.3s font-size ease'
     },
     infoWrapper: {
         flex: 2
