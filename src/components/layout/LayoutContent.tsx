@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from 'react';
-import { Container, Grid } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { withStyles, WithStyles, createStyles } from '@material-ui/styles';
 
 const styles = createStyles({
@@ -19,7 +19,7 @@ export default withStyles(styles)(function LayoutContent(
 ) {
     return (
         <Grid item className={props.classes.root}>
-            <Container>{props.children}</Container>
+            {props.children}
         </Grid>
     );
 });

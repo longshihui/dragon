@@ -1,41 +1,32 @@
 import React from 'react';
 import { createStyles, WithStyles, withStyles } from '@material-ui/styles';
-import ParentDirectorySelector from './ParentDirectorySelector';
-import ProjectNameInput from './ProjectNameInput';
-import DirectorySelector from './directory-selector';
-import { Button, Grid } from '@material-ui/core';
+import { Container, Stepper, Step, StepLabel, Grid } from '@material-ui/core';
 import Validator from 'async-validator';
 import fs from 'fs';
 import path from 'path';
-import { Alert, Loading } from '@/components';
+import { Alert } from '@/components';
 import { promisify } from 'util';
 import DataBase from '@/modules/user-data';
 import { remote } from 'electron';
+import SelectStoreDirectory from './SelectStoreDirectory';
+import PRConfig from './PRConfig';
 
 const mkdir = promisify(fs.mkdir);
 const DATABASE_KEY = 'create-pr';
 
 const styles = createStyles({
-    row: {
-        marginTop: 20,
-        marginBottom: 20
+    container: {
+        width: '100%',
+        height: '100%'
     },
-    input: {
-        marginRight: 20,
-        flexGrow: 1,
-        flexBasis: 'auto',
-        flexShrink: 1
-    },
-    iconButton: {
-        flexGrow: 0,
-        flexBasis: 'auto',
-        flexShrink: 0
+    stepper: {
+        background: 'transparent'
     }
 });
 
-interface CreatePRProps extends WithStyles<typeof styles> {}
+interface Props extends WithStyles<typeof styles> {}
 
-interface CreatePRState {
+interface State {
     // 选择的存放目录
     selectedDirectory: string;
     // 项目名
@@ -46,9 +37,11 @@ interface CreatePRState {
     createDirectoryList: string[];
     // 是否正在创建
     isCreating: boolean;
+    steps: string[];
+    activeStep: number;
 }
 
-class CreatePR extends React.Component<CreatePRProps, CreatePRState> {
+class CreatePR extends React.Component<Props, State> {
     constructor(props) {
         super(props);
         this.state = {
@@ -56,7 +49,9 @@ class CreatePR extends React.Component<CreatePRProps, CreatePRState> {
             projectName: '',
             directoryList: [],
             createDirectoryList: [],
-            isCreating: false
+            isCreating: false,
+            steps: ['选择需求存放目录', '需求配置', '预览'],
+            activeStep: 0
         };
     }
     async componentWillMount() {
@@ -185,48 +180,61 @@ class CreatePR extends React.Component<CreatePRProps, CreatePRState> {
             });
         }
     }
+    handleNext() {
+        this.setState(state => ({
+            activeStep: Math.min(state.activeStep + 1, state.steps.length - 1)
+        }));
+    }
+    handlePrev() {
+        this.setState(state => ({
+            activeStep: Math.max(state.activeStep - 1, 0)
+        }));
+    }
     render() {
+        let step;
+        let handleNext = () => this.handleNext();
+        let handlePrev = () => this.handlePrev();
+        switch (this.state.activeStep) {
+            case 0:
+                step = (
+                    <SelectStoreDirectory
+                        selectedDirectory={this.state.selectedDirectory}
+                        onChange={newDirectory =>
+                            this.changeSelectedDirectory(newDirectory)
+                        }
+                        onNext={handleNext}
+                    />
+                );
+                break;
+            case 1:
+                step = (
+                    <PRConfig
+                        files={this.state.createDirectoryList}
+                        onPrev={handlePrev}
+                        onNext={handleNext}
+                    />
+                );
+                break;
+            default:
+                step = null;
+        }
         return (
-            <Grid container direction="column" spacing={2}>
-                <ParentDirectorySelector
-                    selectedDirectory={this.state.selectedDirectory}
-                    onChange={newDirectory =>
-                        this.changeSelectedDirectory(newDirectory)
-                    }
-                />
-                <ProjectNameInput
-                    projectName={this.state.projectName}
-                    onChange={value => {
-                        this.setState({
-                            projectName: value
-                        });
-                    }}
-                />
-                <DirectorySelector
-                    directoryList={this.state.directoryList}
-                    createDirectoryList={this.state.createDirectoryList}
-                    onChange={newList =>
-                        this.changeCreateDirectoryList(newList)
-                    }
-                />
-                <Grid item container justify="center">
-                    <Grid item>
-                        <Loading
-                            isLoading={this.state.isCreating}
-                            progressProps={{ size: 20 }}
-                        >
-                            <Button
-                                variant="contained"
-                                href=""
-                                color="primary"
-                                size="large"
-                                disabled={this.state.isCreating}
-                                onClick={() => this.handleSubmit()}
-                            >
-                                创建项目
-                            </Button>
-                        </Loading>
-                    </Grid>
+            <Grid container direction="column">
+                <Grid item>
+                    <Stepper
+                        className={this.props.classes.stepper}
+                        activeStep={this.state.activeStep}
+                        alternativeLabel
+                    >
+                        {this.state.steps.map(label => (
+                            <Step key={label}>
+                                <StepLabel>{label}</StepLabel>
+                            </Step>
+                        ))}
+                    </Stepper>
+                </Grid>
+                <Grid item>
+                    <Container>{step}</Container>
                 </Grid>
             </Grid>
         );

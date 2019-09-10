@@ -72,7 +72,7 @@ async function main() {
     }
 
     mainWindow = new BrowserWindow({
-        show: true,
+        show: false,
         width: 1024,
         height: 728,
         webPreferences: {
