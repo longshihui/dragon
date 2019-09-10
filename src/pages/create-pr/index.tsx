@@ -209,7 +209,7 @@ class CreatePR extends React.Component<Props, State> {
             case 1:
                 step = (
                     <PRConfig
-                        files={this.state.createDirectoryList}
+                        defaultFiles={this.state.createDirectoryList}
                         onPrev={handlePrev}
                         onNext={handleNext}
                     />
