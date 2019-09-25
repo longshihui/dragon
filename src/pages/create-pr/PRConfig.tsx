@@ -25,6 +25,8 @@ import {
     Settings as SettingsIcon,
     Undo as UndoIcon
 } from '@material-ui/icons';
+import { Confirm, Alert } from '@/components';
+import Validator from 'async-validator';
 
 const styles = createStyles({
     filesSection: {
@@ -40,7 +42,14 @@ const styles = createStyles({
         }
     },
     tooltip: {
-        fontSize: 14
+        fontSize: 12
+    },
+    listWrapper: {
+        height: '100%'
+    },
+    listPaper: {
+        maxHeight: '100%',
+        overflow: 'auto'
     }
 });
 
@@ -67,6 +76,26 @@ export default withStyles(styles)(
                 openAddDialog: false,
                 addFileName: ''
             };
+        }
+        async onNext() {
+            const validator = new Validator({
+                name(rule, name, callback) {
+                    const errors = [];
+                    if (name.trim() === '') {
+                        errors.push(new Error('需求名不能为空'));
+                    }
+                    callback(errors);
+                }
+            });
+            try {
+                await validator.validate({
+                    name: this.state.name
+                });
+                this.props.onNext();
+            } catch (e) {
+                console.log(e);
+                Alert(e.errors[0].message);
+            }
         }
         render() {
             const handleOpenAddDialog = () =>
@@ -99,6 +128,17 @@ export default withStyles(styles)(
                         openAddDialog: false
                     };
                 });
+            };
+            const handleResetFiles = async () => {
+                if (await Confirm('是否重置？重置后修改将丢失！')) {
+                    this.setState({
+                        files: new Set(this.props.defaultFiles)
+                    });
+                }
+            };
+            const handleEditPreset = () => {
+                // TODO
+                Alert('该功能还未开放');
             };
             return (
                 <Fragment>
@@ -138,8 +178,12 @@ export default withStyles(styles)(
                             alignItems="center"
                             className={this.props.classes.filesSection}
                         >
-                            <Grid item xs={6}>
-                                <Paper>
+                            <Grid
+                                item
+                                xs={6}
+                                className={this.props.classes.listWrapper}
+                            >
+                                <Paper className={this.props.classes.listPaper}>
                                     <List dense>
                                         {Array.from(this.state.files).map(
                                             file => (
@@ -201,6 +245,7 @@ export default withStyles(styles)(
                                     <Fab
                                         color="secondary"
                                         className={this.props.classes.button}
+                                        onClick={handleEditPreset}
                                     >
                                         <SettingsIcon />
                                     </Fab>
@@ -215,6 +260,7 @@ export default withStyles(styles)(
                                     <Fab
                                         color="secondary"
                                         className={this.props.classes.button}
+                                        onClick={handleResetFiles}
                                     >
                                         <UndoIcon />
                                     </Fab>
@@ -234,7 +280,7 @@ export default withStyles(styles)(
                                 className={this.props.classes.button}
                                 variant="contained"
                                 color="primary"
-                                onClick={() => this.props.onNext()}
+                                onClick={() => this.onNext()}
                             >
                                 下一步
                             </Button>
