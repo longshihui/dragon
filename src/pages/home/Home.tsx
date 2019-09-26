@@ -1,5 +1,4 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
 import { RouteComponentProps } from 'react-router-dom';
 import classes from './Home.scss';
 import config from '@/AppConfig';
@@ -14,7 +13,7 @@ export default class Home extends React.Component<RouteComponentProps> {
     }
     render() {
         return (
-            <Grid className={classes.content} container spacing={3}>
+            <div className={classes.content}>
                 {config.map(c => {
                     return (
                         <Card
@@ -26,7 +25,7 @@ export default class Home extends React.Component<RouteComponentProps> {
                         />
                     );
                 })}
-            </Grid>
+            </div>
         );
     }
 }
