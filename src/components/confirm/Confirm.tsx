@@ -8,6 +8,7 @@ import {
     DialogTitle
 } from '@material-ui/core';
 import { isString } from 'lodash';
+import DragonThemeProvider from '@/theme';
 
 export interface ConfirmProps {
     open: boolean;
@@ -42,32 +43,34 @@ export default class Confirm extends React.Component<
     }
     render() {
         return (
-            <Dialog open={this.props.open} fullWidth maxWidth="sm">
-                <DialogTitle>{this.title}</DialogTitle>
-                <DialogContent>{this.content}</DialogContent>
-                <DialogActions>
-                    <Button
-                        href=""
-                        variant="contained"
-                        color="secondary"
-                        onClick={() =>
-                            this.props.onClose && this.props.onClose(false)
-                        }
-                    >
-                        {this.cancelButtonText}
-                    </Button>
-                    <Button
-                        href=""
-                        variant="contained"
-                        color="primary"
-                        onClick={() =>
-                            this.props.onClose && this.props.onClose(true)
-                        }
-                    >
-                        {this.confirmButtonText}
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            <DragonThemeProvider>
+                <Dialog open={this.props.open} fullWidth maxWidth="sm">
+                    <DialogTitle>{this.title}</DialogTitle>
+                    <DialogContent>{this.content}</DialogContent>
+                    <DialogActions>
+                        <Button
+                            href=""
+                            variant="contained"
+                            color="secondary"
+                            onClick={() =>
+                                this.props.onClose && this.props.onClose(false)
+                            }
+                        >
+                            {this.cancelButtonText}
+                        </Button>
+                        <Button
+                            href=""
+                            variant="contained"
+                            color="primary"
+                            onClick={() =>
+                                this.props.onClose && this.props.onClose(true)
+                            }
+                        >
+                            {this.confirmButtonText}
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            </DragonThemeProvider>
         );
     }
 }
