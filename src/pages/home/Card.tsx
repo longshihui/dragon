@@ -49,29 +49,27 @@ interface Props {
 class Card extends React.Component<Props & WithStyles<typeof styles>> {
     render() {
         return (
-            <Grid item xs={4} onClick={() => this.props.onClick()}>
-                <div className={this.props.classes.container}>
-                    <div className={this.props.classes.iconWrapper}>
-                        {this.props.icon}
-                    </div>
-                    <div className={this.props.classes.infoWrapper}>
-                        <Typography
-                            variant="h6"
-                            component="p"
-                            className={this.props.classes.title}
-                        >
-                            {this.props.title}
-                        </Typography>
-                        <Typography
-                            variant="body2"
-                            component="p"
-                            className={this.props.classes.description}
-                        >
-                            {this.props.description}
-                        </Typography>
-                    </div>
+            <div className={this.props.classes.container}>
+                <div className={this.props.classes.iconWrapper}>
+                    {this.props.icon}
                 </div>
-            </Grid>
+                <div className={this.props.classes.infoWrapper}>
+                    <Typography
+                        variant="h6"
+                        component="p"
+                        className={this.props.classes.title}
+                    >
+                        {this.props.title}
+                    </Typography>
+                    <Typography
+                        variant="body2"
+                        component="p"
+                        className={this.props.classes.description}
+                    >
+                        {this.props.description}
+                    </Typography>
+                </div>
+            </div>
         );
     }
 }
