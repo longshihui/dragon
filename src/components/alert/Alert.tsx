@@ -8,6 +8,7 @@ import {
     DialogTitle
 } from '@material-ui/core';
 import { isString } from 'lodash';
+import DragonThemeProvider from '@/theme';
 
 export interface AlertProps {
     open: boolean;
@@ -35,22 +36,24 @@ export default class Alert extends React.Component<AlertProps, AlertState> {
     }
     render() {
         return (
-            <Dialog open={this.props.open} fullWidth maxWidth="sm">
-                <DialogTitle>{this.title}</DialogTitle>
-                <DialogContent>{this.content}</DialogContent>
-                <DialogActions>
-                    <Button
-                        href=""
-                        variant="contained"
-                        color="primary"
-                        onClick={() =>
-                            this.props.onClose && this.props.onClose()
-                        }
-                    >
-                        {this.closeButtonText}
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            <DragonThemeProvider>
+                <Dialog open={this.props.open} fullWidth maxWidth="sm">
+                    <DialogTitle>{this.title}</DialogTitle>
+                    <DialogContent>{this.content}</DialogContent>
+                    <DialogActions>
+                        <Button
+                            href=""
+                            variant="contained"
+                            color="primary"
+                            onClick={() =>
+                                this.props.onClose && this.props.onClose()
+                            }
+                        >
+                            {this.closeButtonText}
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            </DragonThemeProvider>
         );
     }
 }

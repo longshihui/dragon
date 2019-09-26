@@ -49,7 +49,10 @@ interface Props {
 class Card extends React.Component<Props & WithStyles<typeof styles>> {
     render() {
         return (
-            <div className={this.props.classes.container}>
+            <div
+                className={this.props.classes.container}
+                onClick={() => this.props.onClick()}
+            >
                 <div className={this.props.classes.iconWrapper}>
                     {this.props.icon}
                 </div>
