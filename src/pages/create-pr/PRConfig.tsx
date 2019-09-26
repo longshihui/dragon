@@ -27,6 +27,8 @@ import {
 } from '@material-ui/icons';
 import { Confirm, Alert } from '@/components';
 import Validator from 'async-validator';
+import fs from 'fs';
+import path from 'path';
 
 const styles = createStyles({
     filesSection: {
@@ -55,6 +57,7 @@ const styles = createStyles({
 
 interface Props extends WithStyles<typeof styles> {
     defaultFiles: string[];
+    storeDirectory: string;
     onNext(): void;
     onPrev(): void;
 }
@@ -79,10 +82,19 @@ export default withStyles(styles)(
         }
         async onNext() {
             const validator = new Validator({
-                name(rule, name, callback) {
+                name: (rule, name, callback) => {
                     const errors = [];
                     if (name.trim() === '') {
                         errors.push(new Error('需求名不能为空'));
+                        return callback(errors);
+                    }
+                    const projectPath = path.resolve(
+                        this.props.storeDirectory,
+                        './',
+                        name
+                    );
+                    if (fs.existsSync(projectPath)) {
+                        errors.push(new Error('项目: ' + name + ' 已存在'));
                     }
                     callback(errors);
                 }
@@ -93,8 +105,7 @@ export default withStyles(styles)(
                 });
                 this.props.onNext();
             } catch (e) {
-                console.log(e);
-                Alert(e.errors[0].message);
+                Alert(e.message || e.errors[0].message);
             }
         }
         render() {
