@@ -6,7 +6,7 @@ type LayoutContainerProps = PropsWithChildren<{}> & WithStyles<typeof styles>;
 
 const styles = createStyles({
     root: {
-        minHeight: '100vh'
+        height: '100vh'
     }
 });
 
@@ -18,6 +18,7 @@ export default withStyles(styles)(function LayoutContainer(
             container
             direction="column"
             alignItems="stretch"
+            wrap="nowrap"
             className={props.classes.root}
         >
             {props.children}

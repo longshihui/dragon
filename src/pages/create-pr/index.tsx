@@ -1,7 +1,6 @@
 import React from 'react';
 import { createStyles, WithStyles, withStyles } from '@material-ui/styles';
 import { Container, Stepper, Step, StepLabel, Grid } from '@material-ui/core';
-import Validator from 'async-validator';
 import fs from 'fs';
 import path from 'path';
 import { Alert } from '@/components';
@@ -10,6 +9,8 @@ import DataBase from '@/modules/user-data';
 import { remote } from 'electron';
 import SelectStoreDirectory from './SelectStoreDirectory';
 import PRConfig from './PRConfig';
+import Preview from './Preview';
+import { RouteComponentProps } from 'react-router-dom';
 
 const mkdir = promisify(fs.mkdir);
 const DATABASE_KEY = 'create-pr';
@@ -24,7 +25,7 @@ const styles = createStyles({
     }
 });
 
-interface Props extends WithStyles<typeof styles> {}
+interface Props extends RouteComponentProps, WithStyles<typeof styles> {}
 
 interface State {
     // 选择的存放目录
@@ -89,71 +90,7 @@ class CreatePR extends React.Component<Props, State> {
         });
         db.set(`${DATABASE_KEY}.storageDir`, newDirectory).write();
     }
-    changeCreateDirectoryList(newList) {
-        this.setState(() => {
-            return {
-                createDirectoryList: newList
-            };
-        });
-    }
-    // 校验提交内容
-    async validate() {
-        const validator = new Validator({
-            // 校验存放目录是否为存在
-            selectedDirectory(rule, value, callback) {
-                const error = [];
-                if (!fs.existsSync(value)) {
-                    error.push(new Error('存放目录不存在，需要重新选择'));
-                }
-                callback(error);
-            },
-            // 校验项目名字是否已存在
-            projectName: {
-                required: true,
-                validator(rule, projectName, callback, source) {
-                    const error = [];
-                    if (projectName.trim() === '') {
-                        error.push(new Error('项目名称不能为空'));
-                    }
-                    if (fs.existsSync(source.selectedDirectory)) {
-                        const projectPath = path.resolve(
-                            source.selectedDirectory,
-                            './',
-                            projectName
-                        );
-                        if (fs.existsSync(projectPath)) {
-                            error.push(
-                                new Error('项目: ' + projectName + ' 已存在')
-                            );
-                        }
-                    }
-                    callback(error);
-                }
-            },
-            // 校验创建的目录列表是否为空
-            createDirectoryList(rule, list, callback) {
-                const error = [];
-                if (list.length === 0) {
-                    error.push(new Error('创建的目录不能为空!'));
-                }
-                callback(error);
-            }
-        });
-        const validateResult = await new Promise(resolve => {
-            validator.validate(this.state, errors => {
-                resolve(errors);
-            });
-        });
-        if (validateResult) {
-            await Alert(validateResult[0].message);
-            return false;
-        }
-        return true;
-    }
     async handleSubmit() {
-        if (!(await this.validate())) {
-            return;
-        }
         this.setState({
             isCreating: true
         });
@@ -172,12 +109,15 @@ class CreatePR extends React.Component<Props, State> {
                 })
             );
             await Alert('创建成功');
-        } catch (e) {
-            await Alert(e.message);
-        } finally {
             this.setState({
                 isCreating: false
             });
+            this.props.history.replace('/');
+        } catch (e) {
+            this.setState({
+                isCreating: false
+            });
+            await Alert(e.message);
         }
     }
     handleNext() {
@@ -212,7 +152,24 @@ class CreatePR extends React.Component<Props, State> {
                         defaultFiles={this.state.createDirectoryList}
                         storeDirectory={this.state.selectedDirectory}
                         onPrev={handlePrev}
-                        onNext={handleNext}
+                        onNext={data => {
+                            this.setState({
+                                projectName: data.projectName,
+                                createDirectoryList: data.files
+                            });
+                            handleNext();
+                        }}
+                    />
+                );
+                break;
+            case 2:
+                step = (
+                    <Preview
+                        storeDirectory={this.state.selectedDirectory}
+                        subDirectoryList={this.state.createDirectoryList}
+                        projectName={this.state.projectName}
+                        onPrev={handlePrev}
+                        onConfirm={this.handleSubmit.bind(this)}
                     />
                 );
                 break;
@@ -220,7 +177,7 @@ class CreatePR extends React.Component<Props, State> {
                 step = null;
         }
         return (
-            <Grid container direction="column">
+            <Grid container direction="column" wrap="nowrap">
                 <Grid item>
                     <Stepper
                         className={this.props.classes.stepper}
