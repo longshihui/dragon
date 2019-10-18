@@ -58,7 +58,7 @@ const styles = createStyles({
 interface Props extends WithStyles<typeof styles> {
     defaultFiles: string[];
     storeDirectory: string;
-    onNext(): void;
+    onNext(data: { projectName: string; files: string[] }): void;
     onPrev(): void;
 }
 
@@ -103,7 +103,10 @@ export default withStyles(styles)(
                 await validator.validate({
                     name: this.state.name
                 });
-                this.props.onNext();
+                this.props.onNext({
+                    projectName: this.state.name,
+                    files: Array.from(this.state.files)
+                });
             } catch (e) {
                 Alert(e.message || e.errors[0].message);
             }

@@ -6,7 +6,7 @@ import AppBar from '@/components/app-bar';
 const styles = createStyles({
     root: {
         marginBottom: 20,
-        WebkitAppRegion: 'drag'
+        flex: '0 0 auto'
     }
 });
 

@@ -8,7 +8,8 @@ const styles = createStyles({
         flexGrow: 1,
         flexShrink: 1,
         flexBasis: 'auto',
-        marginBottom: 20
+        marginBottom: 20,
+        overflow: 'auto'
     }
 });
 
