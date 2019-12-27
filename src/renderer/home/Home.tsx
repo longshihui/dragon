@@ -1,7 +1,7 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import classes from './Home.scss';
-import config from '@/AppConfig';
+import config from '@/renderer/AppConfig';
 import Card from './Card';
 
 export default class Home extends React.Component<RouteComponentProps> {

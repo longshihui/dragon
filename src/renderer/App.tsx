@@ -2,16 +2,18 @@ import 'typeface-roboto/index.css';
 import { hot } from 'react-hot-loader/root';
 import React from 'react';
 import { render } from 'react-dom';
-import { HashRouter as Router, Route, Switch } from 'react-router-dom';
-import Home from './pages/home';
+import { HashRouter, Route, Switch } from 'react-router-dom';
+import Home from './home';
 import AppConfig from './AppConfig';
 import DragonThemeProvider from './theme';
-import { Layout } from '@/components';
+import { CssBaseline } from '@material-ui/core';
+import { Layout } from '@/renderer/ui';
 
 const App = hot(function() {
     return (
-        <DragonThemeProvider>
-            <Router>
+        <HashRouter>
+            <DragonThemeProvider>
+                <CssBaseline />
                 <Layout>
                     <Switch>
                         <Route path="/" exact component={Home} />
@@ -27,8 +29,8 @@ const App = hot(function() {
                         })}
                     </Switch>
                 </Layout>
-            </Router>
-        </DragonThemeProvider>
+            </DragonThemeProvider>
+        </HashRouter>
     );
 });
 

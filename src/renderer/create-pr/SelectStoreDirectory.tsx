@@ -2,7 +2,7 @@ import React from 'react';
 import { TextField, Button, Grid } from '@material-ui/core';
 import { createStyles, WithStyles, withStyles } from '@material-ui/styles';
 import { ipcRenderer } from 'electron';
-import { IPCEvents } from '@/modules/ipc/create-pr';
+import { IPCEvents } from '@/main/ipc/create-pr';
 import { isString } from 'lodash';
 
 const styles = createStyles({

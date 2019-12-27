@@ -11,6 +11,7 @@ import merge from 'webpack-merge';
 import TerserPlugin from 'terser-webpack-plugin';
 import baseConfig from './webpack.config.base';
 import CheckNodeEnv from './utils/CheckNodeEnv';
+import ProjectConfig from '../project.config';
 
 CheckNodeEnv('production');
 
@@ -21,11 +22,12 @@ export default merge.smart(baseConfig, {
 
     target: 'electron-renderer',
 
-    entry: path.join(__dirname, '..', 'src/App.tsx'),
+    entry: ProjectConfig.entry.renderer,
 
     output: {
         publicPath: './',
-        filename: 'renderer.js',
+        path: ProjectConfig.output.path,
+        filename: ProjectConfig.output.rendererFilename,
         libraryTarget: 'commonjs2'
     },
 

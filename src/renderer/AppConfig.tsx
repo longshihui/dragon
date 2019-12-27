@@ -3,7 +3,7 @@ import { Edit } from '@material-ui/icons';
 import { createStyles, WithStyles, withStyles } from '@material-ui/styles';
 import { SvgIcon } from '@material-ui/core';
 // 页面
-import CreatePR from './pages/create-pr';
+import CreatePR from './create-pr';
 
 const iconStyles = createStyles({
     root: {

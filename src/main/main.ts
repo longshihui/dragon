@@ -15,7 +15,7 @@ import ElectronDevtoolsInstaller, {
     REACT_DEVELOPER_TOOLS,
     REDUX_DEVTOOLS
 } from 'electron-devtools-installer';
-import IPC from '@/modules/ipc';
+import IPC from '@/main/ipc';
 
 let mainWindow = null;
 

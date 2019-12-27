@@ -8,7 +8,7 @@ import {
     DialogTitle
 } from '@material-ui/core';
 import { isString } from 'lodash';
-import DragonThemeProvider from '@/theme';
+import DragonThemeProvider from '@/renderer/theme';
 
 export interface AlertProps {
     open: boolean;

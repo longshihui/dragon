@@ -25,7 +25,7 @@ import {
     Settings as SettingsIcon,
     Undo as UndoIcon
 } from '@material-ui/icons';
-import { Confirm, Alert } from '@/components';
+import { Confirm, Alert } from '@/renderer/ui';
 import Validator from 'async-validator';
 import fs from 'fs';
 import path from 'path';
