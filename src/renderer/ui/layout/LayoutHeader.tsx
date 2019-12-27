@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react';
 import { Grid } from '@material-ui/core';
 import { createStyles, withStyles, WithStyles } from '@material-ui/styles';
-import AppBar from '@/components/app-bar';
+import AppBar from '@/renderer/ui/app-bar';
 
 const styles = createStyles({
     root: {

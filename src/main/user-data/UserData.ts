@@ -3,7 +3,7 @@ import lowdb from 'lowdb';
 import FileAsync from 'lowdb/adapters/FileAsync';
 import { app, remote } from 'electron';
 import fs from 'fs';
-import { warn } from '@/modules/utils';
+import { warn } from '@/utils';
 // 持久化数据文件名
 const USER_DATA_NAME = 'Dragon.json';
 // 持久化数据存放路径

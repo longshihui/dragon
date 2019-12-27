@@ -10,7 +10,6 @@
     "package-all": "yarn build && electron-builder build -mw",
     "package-win": "yarn build && electron-builder build --win --x64",
     "package-mac": "yarn build && electron-builder build --mac",
-    "preinstall": "ts-node build/utils/CheckYarn.ts",
     "prestart": "yarn build",
     "start": "cross-env NODE_ENV=production electron ./dist/main.js",
     "prettier": "prettier --write \"./src/**/*.{js,jsx,ts,tsx,scss,css}\"",
