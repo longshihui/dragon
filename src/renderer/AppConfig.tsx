@@ -3,7 +3,7 @@ import { Edit } from '@material-ui/icons';
 import { createStyles, WithStyles, withStyles } from '@material-ui/styles';
 import { SvgIcon } from '@material-ui/core';
 // 页面
-import CreatePR from './create-pr';
+import CreatePR from './pages/PRTemplate';
 
 const iconStyles = createStyles({
     root: {
@@ -21,11 +21,11 @@ function styledIcon(Icon: typeof SvgIcon) {
 
 export default [
     {
-        id: 'create-pr',
+        id: 'pr-template',
         icon: createElement(styledIcon(Edit)),
-        title: '创建需求',
-        description: '生成一次需求所需的目录模板',
-        path: '/create-pr',
+        title: '需求模板',
+        description: '生成产品需求目录模板',
+        path: '/pr-template',
         exact: true,
         component: CreatePR
     }
