@@ -3,7 +3,7 @@ import { hot } from 'react-hot-loader/root';
 import React from 'react';
 import { render } from 'react-dom';
 import { HashRouter, Route, Switch } from 'react-router-dom';
-import Home from './home';
+import Home from './pages/Home';
 import AppConfig from './AppConfig';
 import DragonThemeProvider from './theme';
 import { CssBaseline } from '@material-ui/core';
