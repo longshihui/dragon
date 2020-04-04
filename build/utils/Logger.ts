@@ -1,8 +1,35 @@
 import chalk, { Color } from 'chalk';
 
-type MessageType = 'main' | 'renderer' | 'default';
+export function paint(
+    level: 'success' | 'error' | 'warning' | 'info',
+    text: string
+) {
+    let color: typeof Color = 'cyan';
+    switch (level) {
+        case 'success':
+            color = 'green';
+            break;
+        case 'error':
+            color = 'red';
+            break;
+        case 'warning':
+            color = 'yellow';
+            break;
+    }
+    return chalk[color].bold(text);
+}
 
-export default function(type: MessageType, message: string) {
+export function levelLog(
+    level: 'success' | 'error' | 'warning' | 'info',
+    message: string
+) {
+    console.log(paint(level, message));
+}
+
+export default function(
+    type: 'main' | 'renderer' | 'default',
+    message: string
+) {
     let color: typeof Color = 'cyan';
     let title = '';
     let log = '';
