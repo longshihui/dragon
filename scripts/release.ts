@@ -11,6 +11,7 @@ import { promisify } from 'util';
 const CHANGE_LOG_OUTPUT = path.join(process.cwd(), 'CHANGELOG.md');
 const PACKAGE_JSON_PATH = path.join(process.cwd(), 'package.json');
 const promisifyExec = promisify(exec);
+const isFirstRelease = !fs.existsSync(CHANGE_LOG_OUTPUT);
 
 async function bumpVersion() {
     const oldPackageJSON = fs.readFileSync(PACKAGE_JSON_PATH, 'utf8');
@@ -18,11 +19,18 @@ async function bumpVersion() {
     const indent = detectIndent(oldPackageJSON).indent;
     const newPackageJSON = JSON.parse(oldPackageJSON);
     let newVersion = '';
-    const answer = await inquirer.prompt<{ type: 'major' | 'minor' | 'patch' }>(
-        [
+
+    if (isFirstRelease) {
+        newVersion = oldVersion;
+        levelLog('warning', `本次为第一次发布版本, 版本号为${newVersion}`);
+    } else {
+        const answer = await inquirer.prompt<{
+            type: 'major' | 'minor' | 'patch';
+        }>([
             {
                 name: 'type',
                 type: 'list',
+                message: '选择下一个发布版本的版本类型',
                 choices: [
                     {
                         name: '重大版本升级',
@@ -38,22 +46,25 @@ async function bumpVersion() {
                     }
                 ]
             }
-        ]
-    );
-    newVersion = semver.inc(oldVersion, answer.type);
+        ]);
+        newVersion = semver.inc(oldVersion, answer.type);
+    }
+
     newPackageJSON.version = newVersion;
+
     fs.writeFileSync(
         PACKAGE_JSON_PATH,
-        JSON.stringify(oldPackageJSON, null, indent)
+        JSON.stringify(newPackageJSON, null, indent)
     );
-    return newVersion;
+
+    return { oldVersion, newVersion };
 }
 
 async function genGitTag(version: string) {
     await promisifyExec(`git tag v${version}`);
 }
 
-async function createCommit(version) {
+async function createCommit(version: string) {
     await promisifyExec(`git add .`);
     await promisifyExec(`git commit -m "发布版本: ${version}"`);
 }
@@ -61,7 +72,8 @@ async function createCommit(version) {
 async function genChangeLog() {
     const ws = fs.createWriteStream(CHANGE_LOG_OUTPUT);
     changelog({
-        preset: 'angular'
+        preset: 'angular',
+        releaseCount: 0
     }).pipe(ws);
     return new Promise((resolve, reject) => {
         ws.on('close', resolve);
@@ -69,13 +81,35 @@ async function genChangeLog() {
     });
 }
 
+async function syncToRemote() {
+    levelLog('info', '同步版本信息至远程中...');
+    await promisifyExec(`git push --tags`);
+    levelLog('info', '同步远程完成!');
+}
+
+function finalySay(oldVersion: string, newVersion: string) {
+    if (isFirstRelease) {
+        levelLog('info', `成功发布第一个版本${paint('success', newVersion)}`);
+        return;
+    }
+    levelLog(
+        'info',
+        `成功更新版本号：${paint('warning', newVersion)} -> ${paint(
+            'success',
+            oldVersion
+        )}`
+    );
+}
+
 (async function () {
     try {
-        const version = await bumpVersion();
-        genGitTag(version);
+        levelLog('info', '进入版本发布流程\n');
+        const { oldVersion, newVersion } = await bumpVersion();
         await genChangeLog();
-        await createCommit(version);
-        levelLog('info', `更新版本号至${paint('success', version)}`);
+        await createCommit(newVersion);
+        await genGitTag(newVersion);
+        await syncToRemote();
+        finalySay(oldVersion, newVersion);
     } catch (e) {
         levelLog('error', e.message);
         process.exit(1);
