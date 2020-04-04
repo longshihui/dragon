@@ -1,16 +1,15 @@
-import chalk from "chalk";
+import { levelLog } from './Logger';
 
-export default function CheckNodeEnv(expectedEnv) {
-  if (!expectedEnv) {
-    throw new Error('"expectedEnv" not set');
-  }
+export default function CheckNodeEnv(expectedEnv: string) {
+    if (!expectedEnv) {
+        throw new Error('未指定运行环境');
+    }
 
-  if (process.env.NODE_ENV !== expectedEnv) {
-    console.log(
-      chalk.whiteBright.bgRed.bold(
-        `"process.env.NODE_ENV" must be "${expectedEnv}" to use this webpack config`
-      )
-    );
-    process.exit(2);
-  }
+    if (process.env.NODE_ENV !== expectedEnv) {
+        levelLog(
+            'error',
+            `当前的运行环境需要指定为：${expectedEnv}，请检查process.env.NODE_ENV配置`
+        );
+        process.exit(2);
+    }
 }
