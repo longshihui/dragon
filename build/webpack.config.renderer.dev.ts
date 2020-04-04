@@ -21,7 +21,7 @@ interface Options {
     dllManifestPath: string;
 }
 
-export default function({ host, port, dllManifestPath }: Options) {
+export default function ({ host, port, dllManifestPath }: Options) {
     const publicPath = `http://${host}:${port}/`;
 
     return merge.smart(baseConfig, {
@@ -53,74 +53,32 @@ export default function({ host, port, dllManifestPath }: Options) {
                     }
                 },
                 {
-                    test: /\.global\.css$/,
+                    test: /\.css$/,
                     use: [
-                        {
-                            loader: 'style-loader'
-                        },
                         {
                             loader: 'css-loader',
                             options: {
+                                modules: true,
                                 sourceMap: true
                             }
                         }
                     ]
                 },
                 {
-                    test: /^((?!\.global).)*\.css$/,
+                    test: /\.(scss|sass)$/,
                     use: [
-                        {
-                            loader: 'style-loader'
-                        },
                         {
                             loader: 'css-loader',
                             options: {
-                                modules: true,
                                 sourceMap: true,
-                                importLoaders: 1,
-                                localIdentName:
-                                    '[name]__[local]__[hash:base64:5]'
+                                importLoaders: 1
                             }
-                        }
-                    ]
-                },
-                // SASS support - compile all .global.scss files and pipe it to style.css
-                {
-                    test: /\.global\.(scss|sass)$/,
-                    use: [
-                        {
-                            loader: 'style-loader'
                         },
                         {
-                            loader: 'css-loader',
+                            loader: 'sass-loader',
                             options: {
                                 sourceMap: true
                             }
-                        },
-                        {
-                            loader: 'sass-loader'
-                        }
-                    ]
-                },
-                // SASS support - compile all other .scss files and pipe it to style.css
-                {
-                    test: /^((?!\.global).)*\.(scss|sass)$/,
-                    use: [
-                        {
-                            loader: 'style-loader'
-                        },
-                        {
-                            loader: 'css-loader',
-                            options: {
-                                modules: true,
-                                sourceMap: true,
-                                importLoaders: 1,
-                                localIdentName:
-                                    '[name]__[local]__[hash:base64:5]'
-                            }
-                        },
-                        {
-                            loader: 'sass-loader'
                         }
                     ]
                 },
@@ -248,11 +206,9 @@ export default function({ host, port, dllManifestPath }: Options) {
                 ignored: /node_modules/,
                 poll: 100
             },
-            // @ts-ignore
-            // @types/webpack中disableDotRule被写死为true
             historyApiFallback: {
                 verbose: true,
-                disableDotRule: false
+                disableDotRule: true
             },
             before() {
                 if (process.env.START_HOT) {
