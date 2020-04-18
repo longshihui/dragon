@@ -7,7 +7,7 @@
  * `./app/main.prod.js` using webpack. This gives us some performance wins.
  *
  */
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, Menu } from 'electron';
 import path from 'path';
 import ElectronDebug from 'electron-debug';
 import sourceMapSupport from 'source-map-support';
@@ -45,6 +45,9 @@ const installExtensions = async () => {
         extensions.map(name => ElectronDevtoolsInstaller(name, forceDownload))
     ).catch(console.log);
 };
+
+// 隐藏原生菜单栏
+Menu.setApplicationMenu(null);
 
 /**
  * Add event listeners...
