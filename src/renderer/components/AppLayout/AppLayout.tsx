@@ -15,6 +15,10 @@ export default class AppLayout extends React.Component {
         collapsed: false
     };
 
+    get logeClasses() {
+        return this.state.collapsed ? 'app-logo app-logo--mini' : 'app-logo';
+    }
+
     toggle = () => {
         this.setState({
             collapsed: !this.state.collapsed
@@ -30,7 +34,7 @@ export default class AppLayout extends React.Component {
                     collapsed={this.state.collapsed}
                 >
                     <div className="app-logo-wrap">
-                        <div className="app-logo" />
+                        <div className={this.logeClasses} />
                     </div>
                     <Menu
                         theme="dark"

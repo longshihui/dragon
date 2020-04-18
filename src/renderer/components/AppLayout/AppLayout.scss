@@ -11,6 +11,11 @@
             background: url('./logo.svg') center no-repeat;
             background-size: 400%;
             color: #ffffff;
+            transition: width .3s ease, height .3s ease;
+            &--mini {
+                width: 48px;
+                height: 48px;
+            }
         }
     }
     .app-header {
