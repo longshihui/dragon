@@ -23,13 +23,15 @@ export default class AppLayout extends React.Component {
 
     render() {
         return (
-            <Layout>
+            <Layout className="app-layout">
                 <Sider
                     trigger={null}
                     collapsible
                     collapsed={this.state.collapsed}
                 >
-                    <div className="logo" />
+                    <div className="app-logo-wrap">
+                        <div className="app-logo" />
+                    </div>
                     <Menu
                         theme="dark"
                         mode="inline"
@@ -49,23 +51,20 @@ export default class AppLayout extends React.Component {
                         </Menu.Item>
                     </Menu>
                 </Sider>
-                <Layout className="site-layout">
-                    <Header
-                        className="site-layout-background"
-                        style={{ padding: 0 }}
-                    >
+                <Layout>
+                    <Header className="app-header" style={{ padding: 0 }}>
                         {React.createElement(
                             this.state.collapsed
                                 ? MenuUnfoldOutlined
                                 : MenuFoldOutlined,
                             {
-                                className: 'trigger',
+                                className: 'app-header-collapse-trigger',
                                 onClick: this.toggle
                             }
                         )}
                     </Header>
                     <Content
-                        className="site-layout-background"
+                        className="app-content"
                         style={{
                             margin: '24px 16px',
                             padding: 24,

@@ -56,6 +56,9 @@ export default function ({ host, port, dllManifestPath }: Options) {
                     test: /\.css$/,
                     use: [
                         {
+                            loader: 'style-loader'
+                        },
+                        {
                             loader: 'css-loader',
                             options: {
                                 modules: true,
@@ -65,8 +68,28 @@ export default function ({ host, port, dllManifestPath }: Options) {
                     ]
                 },
                 {
+                    test: /\.less$/,
+                    use: [
+                        {
+                            loader: 'style-loader' // creates style nodes from JS strings
+                        },
+                        {
+                            loader: 'css-loader' // translates CSS into CommonJS
+                        },
+                        {
+                            loader: 'less-loader', // compiles Less to CSS
+                            options: {
+                                javascriptEnabled: true
+                            }
+                        }
+                    ]
+                },
+                {
                     test: /\.(scss|sass)$/,
                     use: [
+                        {
+                            loader: 'style-loader'
+                        },
                         {
                             loader: 'css-loader',
                             options: {

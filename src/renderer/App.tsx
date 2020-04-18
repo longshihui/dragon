@@ -5,7 +5,8 @@ import { render } from 'react-dom';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import Home from './pages/Home';
 import AppConfig from './AppConfig';
-import AppLayout from './components/AppLayout';
+import AppLayout from './components/AppLayout/index';
+import './theme/App.scss';
 
 const App = hot(function () {
     return (
