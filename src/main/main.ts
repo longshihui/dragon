@@ -78,6 +78,7 @@ async function main() {
         show: false,
         width: 1024,
         height: 728,
+        resizable: false,
         webPreferences: {
             nodeIntegration: true
         }
