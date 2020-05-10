@@ -1,6 +1,4 @@
 import React from 'react';
-import { createStyles, WithStyles, withStyles } from '@material-ui/styles';
-import { Container, Stepper, Step, StepLabel, Grid } from '@material-ui/core';
 import fs from 'fs';
 import path from 'path';
 import { Alert } from '@/renderer/ui';
@@ -11,21 +9,15 @@ import SelectStoreDirectory from './SelectStoreDirectory';
 import PRConfig from './PRConfig';
 import Preview from './Preview';
 import { RouteComponentProps } from 'react-router-dom';
+import { Steps } from 'antd';
+import './PRTemplate.scss';
+
+const { Step } = Steps;
 
 const mkdir = promisify(fs.mkdir);
 const DATABASE_KEY = 'create-pr';
 
-const styles = createStyles({
-    container: {
-        width: '100%',
-        height: '100%'
-    },
-    stepper: {
-        background: 'transparent'
-    }
-});
-
-interface Props extends RouteComponentProps, WithStyles<typeof styles> {}
+interface Props extends RouteComponentProps {}
 
 interface State {
     // 选择的存放目录
@@ -177,26 +169,20 @@ class CreatePR extends React.Component<Props, State> {
                 step = null;
         }
         return (
-            <Grid container direction="column" wrap="nowrap">
-                <Grid item>
-                    <Stepper
-                        className={this.props.classes.stepper}
-                        activeStep={this.state.activeStep}
-                        alternativeLabel
-                    >
-                        {this.state.steps.map(label => (
-                            <Step key={label}>
-                                <StepLabel>{label}</StepLabel>
-                            </Step>
-                        ))}
-                    </Stepper>
-                </Grid>
-                <Grid item>
-                    <Container>{step}</Container>
-                </Grid>
-            </Grid>
+            <div className="pr-template">
+                <Steps
+                    className="pr-template__steps"
+                    current={this.state.activeStep}
+                    progressDot
+                >
+                    {this.state.steps.map(label => (
+                        <Step key={label} title={label}></Step>
+                    ))}
+                </Steps>
+                <div className="pr-template__content">{step}</div>
+            </div>
         );
     }
 }
 
-export default withStyles(styles)(CreatePR);
+export default CreatePR;

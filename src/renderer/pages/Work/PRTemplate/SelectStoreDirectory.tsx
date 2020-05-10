@@ -1,92 +1,93 @@
-import React from 'react';
-import { TextField, Button, Grid } from '@material-ui/core';
-import { createStyles, WithStyles, withStyles } from '@material-ui/styles';
+import React, { createRef, Ref } from 'react';
 import { ipcRenderer } from 'electron';
 import { IPCEvents } from '@/main/ipc/create-pr';
 import { isString } from 'lodash';
+import { Form, Input, Button } from 'antd';
+import { FolderOpenOutlined } from '@ant-design/icons';
+import fs from 'fs';
+import { promisify } from 'util';
+import { FormInstance } from 'antd/lib/form';
 
-const styles = createStyles({
-    inputSection: {
-        minHeight: 300
-    },
-    input: {
-        maxWidth: '75%'
-    },
-    actionSection: {
-        textAlign: 'center'
-    },
-    button: {
-        marginRight: 10,
-        '&:last-child': {
-            marginRight: 0
-        }
-    }
-});
+const exists = promisify(fs.exists);
 
-interface Props extends WithStyles<typeof styles> {
+const { Item: FormItem } = Form;
+interface Props {
     selectedDirectory: string;
     onChange: (newDirectory: string) => void;
     onNext: () => void;
 }
 
-export default withStyles(styles)(
-    class SelectStoreDirectory extends React.Component<Props, {}> {
-        async selectDirectory() {
-            ipcRenderer.once(
-                IPCEvents.SELECT_DIRECTORY,
-                (event, directoryPath) => {
-                    if (!isString(directoryPath)) {
-                        return;
-                    }
-                    this.props.onChange(directoryPath);
-                }
-            );
-            ipcRenderer.send(IPCEvents.SELECT_DIRECTORY);
-        }
-        render() {
-            return (
-                <Grid container direction="column">
-                    <Grid
-                        item
-                        container
-                        justify="center"
-                        alignItems="center"
-                        className={this.props.classes.inputSection}
-                    >
-                        <TextField
-                            className={this.props.classes.input}
-                            label="需求存放目录"
-                            placeholder="选择一个路径"
-                            fullWidth
-                            value={this.props.selectedDirectory}
-                            InputLabelProps={{
-                                shrink: true
-                            }}
-                            InputProps={{
-                                readOnly: true
-                            }}
-                        />
-                    </Grid>
-                    <Grid item className={this.props.classes.actionSection}>
-                        <Button
-                            className={this.props.classes.button}
-                            variant="contained"
-                            color="secondary"
-                            onClick={() => this.selectDirectory()}
-                        >
-                            重新选择
-                        </Button>
-                        <Button
-                            className={this.props.classes.button}
-                            variant="contained"
-                            color="primary"
-                            onClick={() => this.props.onNext()}
-                        >
-                            下一步
-                        </Button>
-                    </Grid>
-                </Grid>
-            );
-        }
+interface State {}
+
+export default class SelectStoreDirectory extends React.Component<
+    Props,
+    State
+> {
+    private readonly setFormRef: (formInstance: FormInstance) => void;
+    private form: FormInstance;
+    constructor(props) {
+        super(props);
+        this.form = null;
+        this.setFormRef = formInstance => {
+            this.form = formInstance;
+        };
     }
-);
+    async selectDirectory() {
+        ipcRenderer.once(IPCEvents.SELECT_DIRECTORY, (event, directoryPath) => {
+            if (!isString(directoryPath)) {
+                return;
+            }
+            this.form.setFieldsValue({
+                dir: directoryPath
+            });
+            this.props.onChange(directoryPath);
+        });
+        ipcRenderer.send(IPCEvents.SELECT_DIRECTORY);
+    }
+    onSubmit() {
+        this.props.onNext();
+    }
+    render() {
+        const addonButton = (
+            <Button type="primary" onClick={this.selectDirectory.bind(this)}>
+                <FolderOpenOutlined />
+            </Button>
+        );
+        return (
+            <Form
+                className="pr-template-select-dir"
+                initialValues={{
+                    dir: this.props.selectedDirectory
+                }}
+                onFinish={this.onSubmit.bind(this)}
+                ref={this.setFormRef}
+            >
+                <FormItem
+                    className="pr-template-select-dir__input"
+                    name="dir"
+                    label="需求存放目录"
+                    rules={[
+                        { required: true, message: '请选择目录！' },
+                        {
+                            async validator(rule, value) {
+                                if (value && !(await exists(value))) {
+                                    throw new Error('存放目录不存在');
+                                }
+                            }
+                        }
+                    ]}
+                >
+                    <Input
+                        placeholder="选择一个路径"
+                        addonAfter={addonButton}
+                    />
+                </FormItem>
+                <FormItem className="pr-template-select-dir__footer">
+                    <Button type="primary" htmlType="submit">
+                        下一步
+                    </Button>
+                </FormItem>
+            </Form>
+        );
+    }
+}

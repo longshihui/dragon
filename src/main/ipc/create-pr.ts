@@ -12,23 +12,15 @@ export default {
         {
             event: IPCEvents.SELECT_DIRECTORY,
             mainProcessHandle: async event => {
-                const selectedDirectory = await new Promise(async function(
-                    resolve
-                ) {
-                    const filePaths = await dialog.showOpenDialog(null, {
-                        properties: ['openDirectory'],
-                        buttonLabel: '选择文件夹'
-                    });
-                    if (Array.isArray(filePaths) && filePaths.length > 0) {
-                        resolve(filePaths[0]);
-                    } else {
-                        resolve(null);
-                    }
+                const { filePaths } = await await dialog.showOpenDialog(null, {
+                    properties: ['openDirectory'],
+                    buttonLabel: '选择文件夹'
                 });
-                event.sender.send(
-                    IPCEvents.SELECT_DIRECTORY,
-                    selectedDirectory
-                );
+                let dir = null;
+                if (filePaths.length > 0) {
+                    dir = filePaths[0];
+                }
+                event.reply(IPCEvents.SELECT_DIRECTORY, dir);
             }
         }
     ]
