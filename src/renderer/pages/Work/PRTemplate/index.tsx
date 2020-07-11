@@ -179,7 +179,7 @@ class CreatePR extends React.Component<Props, State> {
                         <Step key={label} title={label}></Step>
                     ))}
                 </Steps>
-                <div className="pr-template__content">{step}</div>
+                <div className="pr-template-content">{step}</div>
             </div>
         );
     }

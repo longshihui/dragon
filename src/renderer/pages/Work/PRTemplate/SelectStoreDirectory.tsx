@@ -1,4 +1,4 @@
-import React, { createRef, Ref } from 'react';
+import React, { Fragment } from 'react';
 import { ipcRenderer } from 'electron';
 import { IPCEvents } from '@/main/ipc/create-pr';
 import { isString } from 'lodash';
@@ -44,8 +44,13 @@ export default class SelectStoreDirectory extends React.Component<
         });
         ipcRenderer.send(IPCEvents.SELECT_DIRECTORY);
     }
-    onSubmit() {
-        this.props.onNext();
+    async onSubmit() {
+        try {
+            await this.form.validateFields();
+            this.props.onNext();
+        } catch (error) {
+            // ignore
+        }
     }
     render() {
         const addonButton = (
@@ -54,40 +59,45 @@ export default class SelectStoreDirectory extends React.Component<
             </Button>
         );
         return (
-            <Form
-                className="pr-template-select-dir"
-                initialValues={{
-                    dir: this.props.selectedDirectory
-                }}
-                onFinish={this.onSubmit.bind(this)}
-                ref={this.setFormRef}
-            >
-                <FormItem
-                    className="pr-template-select-dir__input"
-                    name="dir"
-                    label="需求存放目录"
-                    rules={[
-                        { required: true, message: '请选择目录！' },
-                        {
-                            async validator(rule, value) {
-                                if (value && !(await exists(value))) {
-                                    throw new Error('存放目录不存在');
+            <Fragment>
+                <Form
+                    className="pr-template-content__main"
+                    initialValues={{
+                        dir: this.props.selectedDirectory
+                    }}
+                    ref={this.setFormRef}
+                >
+                    <FormItem
+                        className="pr-template-select-dir__input"
+                        name="dir"
+                        label="需求存放目录"
+                        rules={[
+                            { required: true, message: '请选择目录！' },
+                            {
+                                async validator(rule, value) {
+                                    if (value && !(await exists(value))) {
+                                        throw new Error('存放目录不存在');
+                                    }
                                 }
                             }
-                        }
-                    ]}
-                >
-                    <Input
-                        placeholder="选择一个路径"
-                        addonAfter={addonButton}
-                    />
-                </FormItem>
-                <FormItem className="pr-template-select-dir__footer">
-                    <Button type="primary" htmlType="submit">
+                        ]}
+                    >
+                        <Input
+                            placeholder="选择一个路径"
+                            addonAfter={addonButton}
+                        />
+                    </FormItem>
+                </Form>
+                <div className="pr-template-content__footer">
+                    <Button
+                        type="primary"
+                        htmlType="button"
+                        onClick={this.onSubmit.bind(this)}
+                    >
                         下一步
                     </Button>
-                </FormItem>
-            </Form>
+                </div>
+            </Fragment>
         );
     }
 }

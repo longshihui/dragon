@@ -6,7 +6,7 @@
         flex: 0 0 auto;
         margin: 30px 0;
     }
-    &__content {
+    &-content {
         flex: 1;
     }
 }
@@ -24,8 +24,17 @@
             }
         }
     }
-    &__footer {
+}
+
+.pr-template-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    &__main {
         margin-top: 100px;
+    }
+    &__footer {
         text-align: center;
+        margin-bottom: 100px;
     }
 }
