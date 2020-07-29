@@ -21,7 +21,7 @@ interface Props extends RouteComponentProps {}
 
 interface State {
     // 选择的存放目录
-    selectedDirectory: string;
+    storeDirectory: string;
     // 项目名
     projectName: string;
     // 目录列表
@@ -38,12 +38,12 @@ class CreatePR extends React.Component<Props, State> {
     constructor(props) {
         super(props);
         this.state = {
-            selectedDirectory: '',
+            storeDirectory: '',
             projectName: '',
             directoryList: [],
             createDirectoryList: [],
             isCreating: false,
-            steps: ['选择需求存放目录', '需求配置', '预览'],
+            steps: ['需求基础配置', '需求详细配置', '完成'],
             activeStep: 0
         };
     }
@@ -68,16 +68,16 @@ class CreatePR extends React.Component<Props, State> {
 
         const { storageDir, createDirList } = db.get(DATABASE_KEY).value();
         this.setState({
-            selectedDirectory: storageDir,
+            storeDirectory: storageDir,
             directoryList: createDirList,
             createDirectoryList: createDirList
         });
     }
-    async changeSelectedDirectory(newDirectory) {
+    async changestoreDirectory(newDirectory) {
         const db = await DataBase.connect();
         this.setState(() => {
             return {
-                selectedDirectory: newDirectory
+                storeDirectory: newDirectory
             };
         });
         db.set(`${DATABASE_KEY}.storageDir`, newDirectory).write();
@@ -88,7 +88,7 @@ class CreatePR extends React.Component<Props, State> {
         });
         try {
             const projectPath = path.resolve(
-                this.state.selectedDirectory,
+                this.state.storeDirectory,
                 './',
                 this.state.projectName
             );
@@ -130,11 +130,14 @@ class CreatePR extends React.Component<Props, State> {
             case 0:
                 step = (
                     <SelectStoreDirectory
-                        selectedDirectory={this.state.selectedDirectory}
-                        onChange={newDirectory =>
-                            this.changeSelectedDirectory(newDirectory)
-                        }
-                        onNext={handleNext}
+                        defaultStoreDirectory={this.state.storeDirectory}
+                        onNext={({ storeDirectory, projectName }) => {
+                            this.setState({
+                                storeDirectory,
+                                projectName
+                            });
+                            this.handleNext();
+                        }}
                     />
                 );
                 break;
@@ -142,7 +145,8 @@ class CreatePR extends React.Component<Props, State> {
                 step = (
                     <PRConfig
                         defaultFiles={this.state.createDirectoryList}
-                        storeDirectory={this.state.selectedDirectory}
+                        storeDirectory={this.state.storeDirectory}
+                        name={this.state.projectName}
                         onPrev={handlePrev}
                         onNext={data => {
                             this.setState({
@@ -157,7 +161,7 @@ class CreatePR extends React.Component<Props, State> {
             case 2:
                 step = (
                     <Preview
-                        storeDirectory={this.state.selectedDirectory}
+                        storeDirectory={this.state.storeDirectory}
                         subDirectoryList={this.state.createDirectoryList}
                         projectName={this.state.projectName}
                         onPrev={handlePrev}

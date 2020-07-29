@@ -7,17 +7,20 @@ import { FolderOpenOutlined } from '@ant-design/icons';
 import fs from 'fs';
 import { promisify } from 'util';
 import { FormInstance } from 'antd/lib/form';
+import path from 'path';
 
 const exists = promisify(fs.exists);
 
 const { Item: FormItem } = Form;
 interface Props {
-    selectedDirectory: string;
-    onChange: (newDirectory: string) => void;
-    onNext: () => void;
+    defaultStoreDirectory: string;
+    onNext: (data: State) => void;
 }
 
-interface State {}
+interface State {
+    storeDirectory: string;
+    projectName: string;
+}
 
 export default class SelectStoreDirectory extends React.Component<
     Props,
@@ -31,6 +34,10 @@ export default class SelectStoreDirectory extends React.Component<
         this.setFormRef = formInstance => {
             this.form = formInstance;
         };
+        this.state = {
+            storeDirectory: this.props.defaultStoreDirectory,
+            projectName: ''
+        };
     }
     async selectDirectory() {
         ipcRenderer.once(IPCEvents.SELECT_DIRECTORY, (event, directoryPath) => {
@@ -40,14 +47,16 @@ export default class SelectStoreDirectory extends React.Component<
             this.form.setFieldsValue({
                 dir: directoryPath
             });
-            this.props.onChange(directoryPath);
+            this.setState({
+                storeDirectory: directoryPath
+            });
         });
         ipcRenderer.send(IPCEvents.SELECT_DIRECTORY);
     }
     async onSubmit() {
         try {
             await this.form.validateFields();
-            this.props.onNext();
+            this.props.onNext(this.state);
         } catch (error) {
             // ignore
         }
@@ -63,7 +72,8 @@ export default class SelectStoreDirectory extends React.Component<
                 <Form
                     className="pr-template-content__main"
                     initialValues={{
-                        dir: this.props.selectedDirectory
+                        dir: this.state.storeDirectory,
+                        name: this.state.projectName
                     }}
                     ref={this.setFormRef}
                 >
@@ -85,6 +95,40 @@ export default class SelectStoreDirectory extends React.Component<
                         <Input
                             placeholder="选择一个路径"
                             addonAfter={addonButton}
+                        />
+                    </FormItem>
+                    <FormItem
+                        name="name"
+                        label="需求名"
+                        rules={[
+                            {
+                                type: 'string',
+                                required: true,
+                                message: '需求名不能为空'
+                            },
+                            {
+                                validator: async (rule, name) => {
+                                    if (typeof name !== 'string' || !!name) {
+                                        return;
+                                    }
+                                    const projectPath = path.resolve(
+                                        this.state.storeDirectory,
+                                        './',
+                                        name
+                                    );
+                                    if (await exists(projectPath)) {
+                                        throw new Error(`项目: ${name} 已存在`);
+                                    }
+                                }
+                            }
+                        ]}
+                    >
+                        <Input
+                            onChange={event => {
+                                this.setState({
+                                    projectName: event.target.value
+                                });
+                            }}
                         />
                     </FormItem>
                 </Form>
