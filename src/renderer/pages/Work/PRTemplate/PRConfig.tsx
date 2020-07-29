@@ -1,9 +1,11 @@
 import React, { Component, Fragment } from 'react';
-import { Form, Button, Tree } from 'antd';
-import { FormInstance } from 'antd/lib/form';
-import { FolderFilled, FolderOpenFilled } from '@ant-design/icons';
-
-const { Item: FormItem } = Form;
+import { Button, Tree, Modal, Form, Input } from 'antd';
+import {
+    FolderFilled,
+    FolderOpenFilled,
+    DeleteOutlined,
+    PlusOutlined
+} from '@ant-design/icons';
 
 interface Props {
     defaultFiles: string[]; // 默认生成的文件列表
@@ -20,8 +22,6 @@ interface State {
 }
 
 export default class PRConfig extends Component<Props, State> {
-    private readonly setFormRef: (formInstance: FormInstance) => void;
-    private form: FormInstance;
     constructor(props) {
         super(props);
         this.state = {
@@ -29,14 +29,9 @@ export default class PRConfig extends Component<Props, State> {
             openAddDialog: false,
             addFileName: ''
         };
-        this.form = null;
-        this.setFormRef = formInstance => {
-            this.form = formInstance;
-        };
     }
     async onNext() {
         try {
-            await this.form.validateFields();
             this.props.onNext({
                 projectName: this.props.name,
                 files: Array.from(this.state.files)
@@ -53,32 +48,71 @@ export default class PRConfig extends Component<Props, State> {
             icon: <FolderOpenFilled />,
             children: []
         };
+        const addNode = {
+            title: '',
+            key: '__add__',
+            icon: <PlusOutlined onClick={() => this.addDir()} />,
+            isLeaf: true
+        };
         for (let fileName of this.state.files) {
             root.children.push({
-                title: fileName,
+                title: (
+                    <Fragment>
+                        {fileName}
+                        <DeleteOutlined
+                            className="delete-icon"
+                            onClick={() => {
+                                this.removeDir(fileName);
+                            }}
+                        />
+                    </Fragment>
+                ),
                 key: fileName,
                 icon: <FolderFilled />,
                 isLeaf: true
             });
         }
+        root.children.push(addNode);
         tree.push(root);
         return tree;
+    }
+    removeDir(name) {
+        this.setState(({ files }) => {
+            files.delete(name);
+            return {
+                files: files
+            };
+        });
+    }
+    addDir() {
+        this.setState({
+            openAddDialog: true
+        });
+    }
+    // 确认新增
+    onConfrimAddDir() {
+        this.setState(({ files, addFileName }) => {
+            files.add(addFileName);
+            return {
+                files,
+                openAddDialog: false,
+                addFileName: ''
+            };
+        });
+    }
+    // 取消新增
+    onCancelAddDir() {
+        this.setState({
+            openAddDialog: false,
+            addFileName: ''
+        });
     }
     render() {
         return (
             <Fragment>
-                <Form
-                    className="pr-template-content__main"
-                    ref={this.setFormRef}
-                >
-                    <FormItem label="需求目录">
-                        <Tree
-                            defaultExpandAll
-                            showIcon
-                            treeData={this.dirTree}
-                        />
-                    </FormItem>
-                </Form>
+                <div className="pr-template-content__main">
+                    <Tree defaultExpandAll showIcon treeData={this.dirTree} />
+                </div>
                 <div className="pr-template-content__footer">
                     <Button type="default" onClick={this.props.onPrev}>
                         上一步
@@ -87,6 +121,25 @@ export default class PRConfig extends Component<Props, State> {
                         下一步
                     </Button>
                 </div>
+                <Modal
+                    title="新增文件夹"
+                    visible={this.state.openAddDialog}
+                    onCancel={this.onCancelAddDir.bind(this)}
+                    onOk={this.onConfrimAddDir.bind(this)}
+                >
+                    <Form>
+                        <Form.Item label="名称">
+                            <Input
+                                value={this.state.addFileName}
+                                onChange={event => {
+                                    this.setState({
+                                        addFileName: event.target.value
+                                    });
+                                }}
+                            />
+                        </Form.Item>
+                    </Form>
+                </Modal>
             </Fragment>
         );
     }
