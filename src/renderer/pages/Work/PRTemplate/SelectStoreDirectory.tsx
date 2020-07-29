@@ -102,13 +102,12 @@ export default class SelectStoreDirectory extends React.Component<
                         label="需求名"
                         rules={[
                             {
-                                type: 'string',
                                 required: true,
                                 message: '需求名不能为空'
                             },
                             {
                                 validator: async (rule, name) => {
-                                    if (typeof name !== 'string' || !!name) {
+                                    if (typeof name !== 'string' || !name) {
                                         return;
                                     }
                                     const projectPath = path.resolve(
@@ -117,7 +116,7 @@ export default class SelectStoreDirectory extends React.Component<
                                         name
                                     );
                                     if (await exists(projectPath)) {
-                                        throw new Error(`项目: ${name} 已存在`);
+                                        throw new Error(`需求: ${name} 已存在`);
                                     }
                                 }
                             }

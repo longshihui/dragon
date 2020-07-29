@@ -7,7 +7,7 @@ import DataBase from '@/main/user-data';
 import { remote } from 'electron';
 import SelectStoreDirectory from './SelectStoreDirectory';
 import PRConfig from './PRConfig';
-import Preview from './Preview';
+import Result from './Result';
 import { RouteComponentProps } from 'react-router-dom';
 import { Steps } from 'antd';
 import './PRTemplate.scss';
@@ -43,7 +43,7 @@ class CreatePR extends React.Component<Props, State> {
             directoryList: [],
             createDirectoryList: [],
             isCreating: false,
-            steps: ['需求基础配置', '需求详细配置', '完成'],
+            steps: ['基础配置', '模板目录', '完成'],
             activeStep: 0
         };
     }
@@ -82,7 +82,7 @@ class CreatePR extends React.Component<Props, State> {
         });
         db.set(`${DATABASE_KEY}.storageDir`, newDirectory).write();
     }
-    async handleSubmit() {
+    async createPR() {
         this.setState({
             isCreating: true
         });
@@ -100,11 +100,10 @@ class CreatePR extends React.Component<Props, State> {
                     );
                 })
             );
-            await Alert('创建成功');
             this.setState({
                 isCreating: false
             });
-            this.props.history.replace('/');
+            this.nextStep();
         } catch (e) {
             this.setState({
                 isCreating: false
@@ -112,20 +111,18 @@ class CreatePR extends React.Component<Props, State> {
             await Alert(e.message);
         }
     }
-    handleNext() {
+    nextStep() {
         this.setState(state => ({
             activeStep: Math.min(state.activeStep + 1, state.steps.length - 1)
         }));
     }
-    handlePrev() {
+    prevStep() {
         this.setState(state => ({
             activeStep: Math.max(state.activeStep - 1, 0)
         }));
     }
     render() {
         let step;
-        let handleNext = () => this.handleNext();
-        let handlePrev = () => this.handlePrev();
         switch (this.state.activeStep) {
             case 0:
                 step = (
@@ -136,7 +133,7 @@ class CreatePR extends React.Component<Props, State> {
                                 storeDirectory,
                                 projectName
                             });
-                            this.handleNext();
+                            this.nextStep();
                         }}
                     />
                 );
@@ -147,25 +144,25 @@ class CreatePR extends React.Component<Props, State> {
                         defaultFiles={this.state.createDirectoryList}
                         storeDirectory={this.state.storeDirectory}
                         name={this.state.projectName}
-                        onPrev={handlePrev}
+                        onPrev={this.prevStep.bind(this)}
                         onNext={data => {
                             this.setState({
                                 projectName: data.projectName,
                                 createDirectoryList: data.files
                             });
-                            handleNext();
+                            this.createPR();
                         }}
                     />
                 );
                 break;
             case 2:
                 step = (
-                    <Preview
-                        storeDirectory={this.state.storeDirectory}
-                        subDirectoryList={this.state.createDirectoryList}
-                        projectName={this.state.projectName}
-                        onPrev={handlePrev}
-                        onConfirm={this.handleSubmit.bind(this)}
+                    <Result
+                        templateFullPath={path.join(
+                            this.state.storeDirectory,
+                            this.state.projectName,
+                            '/'
+                        )}
                     />
                 );
                 break;
