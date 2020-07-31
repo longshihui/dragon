@@ -18,6 +18,12 @@ import ElectronDevtoolsInstaller, {
 import IPC from '@/main/ipc';
 
 let mainWindow = null;
+const STATIC_PATH =
+    process.env.NODE_ENV === 'development'
+        ? path.resolve(__dirname, '..', './public')
+        : path.resolve(__dirname, './');
+
+appSetup();
 
 if (process.env.NODE_ENV === 'production') {
     sourceMapSupport.install();
@@ -62,8 +68,19 @@ app.on('window-all-closed', () => {
 });
 
 app.on('ready', async () => {
-    await main();
+    try {
+        await main();
+    } catch (error) {
+        console.error(error);
+    }
 });
+
+function appSetup() {
+    app.setName('Dragon');
+    if (process.platform === 'darwin') {
+        app.dock.setIcon(path.resolve(STATIC_PATH, './app-icon/logo.png'));
+    }
+}
 
 async function main() {
     IPC.register();
@@ -81,7 +98,8 @@ async function main() {
         resizable: false,
         webPreferences: {
             nodeIntegration: true
-        }
+        },
+        icon: path.resolve(STATIC_PATH, './app-icon/win/logo.ico')
     });
 
     if (
