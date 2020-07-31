@@ -109,16 +109,7 @@ async function main() {
         mainWindow.webContents.openDevTools();
     }
 
-    mainWindow.loadURL(
-        `file://${path.resolve(__dirname, '..', './public/app.html')}`
-    );
-
-    // @TODO: Use 'ready-to-show' event
-    //        https://github.com/electron/electron/blob/master/docs/api/browser-window.md#using-ready-to-show-event
-    mainWindow.webContents.on('did-finish-load', () => {
-        if (!mainWindow) {
-            throw new Error('"mainWindow" is not defined');
-        }
+    mainWindow.once('ready-to-show', () => {
         if (process.env.START_MINIMIZED) {
             mainWindow.minimize();
         } else {
@@ -127,7 +118,11 @@ async function main() {
         }
     });
 
-    mainWindow.on('closed', () => {
+    mainWindow.once('closed', () => {
         mainWindow = null;
     });
+
+    mainWindow.loadURL(
+        `file://${path.resolve(__dirname, '..', './public/app.html')}`
+    );
 }

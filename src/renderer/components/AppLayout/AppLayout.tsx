@@ -34,7 +34,7 @@ export default class AppLayout extends React.Component {
                     <AppMenu />
                 </Sider>
                 <Layout>
-                    <Header className="app-header" style={{ padding: 0 }}>
+                    {/* <Header className="app-header" style={{ padding: 0 }}>
                         {React.createElement(
                             this.state.collapsed
                                 ? MenuUnfoldOutlined
@@ -44,7 +44,7 @@ export default class AppLayout extends React.Component {
                                 onClick: this.toggle
                             }
                         )}
-                    </Header>
+                    </Header> */}
                     <Content
                         className="app-content"
                         style={{
