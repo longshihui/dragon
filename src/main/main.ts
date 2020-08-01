@@ -78,7 +78,9 @@ app.on('ready', async () => {
 function appSetup() {
     app.setName('Dragon');
     if (process.platform === 'darwin') {
-        app.dock.setIcon(path.resolve(STATIC_PATH, './app-icon/logo.png'));
+        app.dock.setIcon(
+            path.resolve(STATIC_PATH, './app-icon/png/1024x1024.png')
+        );
     }
 }
 
@@ -99,7 +101,7 @@ async function main() {
         webPreferences: {
             nodeIntegration: true
         },
-        icon: path.resolve(STATIC_PATH, './app-icon/win/logo.ico')
+        icon: path.resolve(STATIC_PATH, './app-icon/win/icon.ico')
     });
 
     if (
