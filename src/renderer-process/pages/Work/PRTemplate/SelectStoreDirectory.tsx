@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { ipcRenderer } from 'electron';
-import { IPCEvents } from '@/main/ipc/create-pr';
+import { IPCEvents } from '@/main-process/PRTemplate/constants';
 import { isString } from 'lodash';
 import { Form, Input, Button } from 'antd';
 import { FolderOpenOutlined } from '@ant-design/icons';

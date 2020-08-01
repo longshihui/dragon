@@ -8,7 +8,7 @@ const styles = createStyles({
     }
 });
 
-export default withStyles(styles)(function(
+export default withStyles(styles)(function (
     props: PropsWithChildren<WithStyles<typeof styles>>
 ) {
     return (

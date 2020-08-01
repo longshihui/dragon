@@ -3,8 +3,8 @@ import path from 'path';
 
 export default ProjectConfigCreator({
     entry: {
-        main: './src/main/main.ts',
-        renderer: './src/renderer/App.tsx'
+        main: './src/main.ts',
+        renderer: './src/renderer-process/App.tsx'
     },
     output: {
         path: path.resolve(__dirname, './dist'),

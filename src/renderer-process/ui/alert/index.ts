@@ -21,14 +21,14 @@ export default async function AlertProxy(options: AlertOptions) {
         document.body.appendChild(container);
     }
 
-    return new Promise(function(resolve) {
+    return new Promise(function (resolve) {
         if (isString(options)) {
             options = {
                 content: options
             };
         }
 
-        let onClose = function() {
+        let onClose = function () {
             render(
                 createElement(
                     Alert,

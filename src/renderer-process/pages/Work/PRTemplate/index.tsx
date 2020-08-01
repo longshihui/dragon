@@ -1,9 +1,9 @@
 import React from 'react';
 import fs from 'fs';
 import path from 'path';
-import { Alert } from '@/renderer/ui';
+import { Alert } from '@/renderer-process/ui';
 import { promisify } from 'util';
-import DataBase from '@/main/user-data';
+import DataBase from '@/main-process/DataBase';
 import { remote } from 'electron';
 import SelectStoreDirectory from './SelectStoreDirectory';
 import PRConfig from './PRConfig';

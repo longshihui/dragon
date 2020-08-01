@@ -15,77 +15,31 @@ import ElectronDevtoolsInstaller, {
     REACT_DEVELOPER_TOOLS,
     REDUX_DEVTOOLS
 } from 'electron-devtools-installer';
-import IPC from '@/main/ipc';
 
-let mainWindow = null;
 const STATIC_PATH =
     process.env.NODE_ENV === 'development'
         ? path.resolve(__dirname, '..', './public')
         : path.resolve(__dirname, './');
 
-appSetup();
+(async function bootstarp() {
+    await developmentEnvSetup();
+    await appSetup();
+    await initMainBrowserWindow();
+})();
 
-if (process.env.NODE_ENV === 'production') {
-    sourceMapSupport.install();
-}
-
-if (
-    process.env.NODE_ENV === 'development' ||
-    process.env.DEBUG_PROD === 'true'
-) {
-    ElectronDebug();
-}
-
-const installExtensions = async () => {
-    // 无vpn环境下
-    // BrowserWindow.addDevToolsExtension(
-    //   path.resolve(
-    //     process.env.HOME,
-    //     "./Library/Application Support/Google/Chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/3.6.0_0"
-    //   )
-    // );
-    const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
-    const extensions = [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS];
-
-    return Promise.all(
-        extensions.map(name => ElectronDevtoolsInstaller(name, forceDownload))
-    ).catch(console.log);
-};
-
-// 隐藏原生菜单栏
-Menu.setApplicationMenu(null);
-
-/**
- * Add event listeners...
- */
-
-app.on('window-all-closed', () => {
-    // Respect the OSX convention of having the application in memory even
-    // after all windows have been closed
-    if (process.platform !== 'darwin') {
-        app.quit();
+// 开发模式设置
+async function developmentEnvSetup() {
+    if (process.env.NODE_ENV === 'production') {
+        sourceMapSupport.install();
     }
-});
 
-app.on('ready', async () => {
-    try {
-        await main();
-    } catch (error) {
-        console.error(error);
+    if (
+        process.env.NODE_ENV === 'development' ||
+        process.env.DEBUG_PROD === 'true'
+    ) {
+        ElectronDebug();
     }
-});
 
-function appSetup() {
-    app.setName('Dragon');
-    if (process.platform === 'darwin') {
-        app.dock.setIcon(
-            path.resolve(STATIC_PATH, './app-icon/png/1024x1024.png')
-        );
-    }
-}
-
-async function main() {
-    IPC.register();
     if (
         process.env.NODE_ENV === 'development' ||
         process.env.DEBUG_PROD === 'true'
@@ -93,7 +47,48 @@ async function main() {
         await installExtensions();
     }
 
-    mainWindow = new BrowserWindow({
+    async function installExtensions() {
+        // 无vpn环境下
+        // BrowserWindow.addDevToolsExtension(
+        //   path.resolve(
+        //     process.env.HOME,
+        //     "./Library/Application Support/Google/Chrome/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/3.6.0_0"
+        //   )
+        // );
+        const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
+        const extensions = [REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS];
+
+        return Promise.all(
+            extensions.map(name =>
+                ElectronDevtoolsInstaller(name, forceDownload)
+            )
+        ).catch(console.log);
+    }
+}
+
+async function appSetup() {
+    app.setName('Dragon');
+    // 隐藏原生菜单栏
+    Menu.setApplicationMenu(null);
+    if (process.platform === 'darwin') {
+        app.dock.setIcon(
+            path.resolve(STATIC_PATH, './app-icon/png/1024x1024.png')
+        );
+    }
+    app.on('window-all-closed', () => {
+        // Respect the OSX convention of having the application in memory even
+        // after all windows have been closed
+        if (process.platform !== 'darwin') {
+            app.quit();
+        }
+    });
+    return new Promise(resolve => {
+        app.on('ready', resolve);
+    });
+}
+
+function initMainBrowserWindow() {
+    let mainWindow = new BrowserWindow({
         show: false,
         width: 1024,
         height: 728,

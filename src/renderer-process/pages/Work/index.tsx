@@ -2,7 +2,7 @@ import React from 'react';
 import {
     FunctionalList,
     FunctionalItem
-} from '@/renderer/components/FunctionalView';
+} from '@/renderer-process/components/FunctionalView';
 import { ApartmentOutlined } from '@ant-design/icons';
 
 export default function Work() {

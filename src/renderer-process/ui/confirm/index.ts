@@ -22,14 +22,14 @@ export default async function ConfirmProxy(options: ConfirmOptions) {
         document.body.appendChild(container);
     }
 
-    return new Promise(function(resolve) {
+    return new Promise(function (resolve) {
         if (isString(options)) {
             options = {
                 content: options
             };
         }
 
-        let onClose = function(result) {
+        let onClose = function (result) {
             render(
                 createElement(
                     Confirm,
