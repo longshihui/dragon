@@ -14,7 +14,8 @@
     "start": "cross-env NODE_ENV=production electron ./dist/main.js",
     "prettier": "prettier --write \"./src/**/*.{js,jsx,ts,tsx,scss,css}\"",
     "lint": "eslint --fix './src/**/*.{js,jsx,ts,tsx}'",
-    "release": "ts-node --project tsconfig-for-node.json ./scripts/release.ts"
+    "release": "ts-node --project tsconfig-for-node.json ./scripts/release.ts",
+    "create-icon": "electron-icon-builder --input=./public/logo.png --output=./public/app-icon"
   },
   "repository": {
     "type": "git",
@@ -90,6 +91,7 @@
     "electron": "^8.2.0",
     "electron-builder": "^22.4.1",
     "electron-devtools-installer": "^3.0.0",
+    "electron-icon-builder": "^1.0.2",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.11.2",
     "enzyme-to-json": "^3.3.5",
