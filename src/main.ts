@@ -15,6 +15,7 @@ import ElectronDevtoolsInstaller, {
     REACT_DEVELOPER_TOOLS,
     REDUX_DEVTOOLS
 } from 'electron-devtools-installer';
+import './main-process/PRTemplate';
 
 const STATIC_PATH =
     process.env.NODE_ENV === 'development'

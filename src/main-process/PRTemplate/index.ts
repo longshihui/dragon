@@ -1,5 +1,4 @@
-import { ipcMain } from 'electron';
-import { dialog } from 'electron';
+import { ipcMain, dialog } from 'electron';
 import { IPCEvents } from './constants';
 
 ipcMain.on(IPCEvents.SELECT_DIRECTORY, async event => {
