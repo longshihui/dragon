@@ -5,6 +5,8 @@ import { render } from 'react-dom';
 import { HashRouter } from 'react-router-dom';
 import AppLayout from './components/AppLayout/index';
 import RouterView from './router';
+import { ConfigProvider } from 'antd';
+import zhCN from 'antd/es/locale/zh_CN';
 
 const App = hot(function () {
     return (
@@ -16,4 +18,9 @@ const App = hot(function () {
     );
 });
 
-render(<App />, document.getElementById('root'));
+render(
+    <ConfigProvider locale={zhCN}>
+        <App />
+    </ConfigProvider>,
+    document.getElementById('root')
+);
