@@ -1,5 +1,5 @@
-const RENDER_NAME = 'create-pr';
+const NAME = 'PRTemplate';
 
 export const IPCEvents = {
-    SELECT_DIRECTORY: `${RENDER_NAME}/selectDirectory`
+    SELECT_DIRECTORY: `${NAME}/selectDirectory`
 };

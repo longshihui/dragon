@@ -2,7 +2,8 @@ import React, { useState, Fragment } from 'react';
 import CycleSelector, {
     useCycleConfig
 } from '../../components/CycleSelector/index';
-import { Form, Button, TimePicker, Slider, Radio, Row, Col, Alert } from 'antd';
+import { Form, Button, TimePicker, Slider, Row, Col, Alert } from 'antd';
+import BreakStyle, { useBreakStyleState } from './BreakStyle';
 
 const { RangePicker } = TimePicker;
 
@@ -11,20 +12,6 @@ const TIME_FORMAT = 'HH:mm';
 const MIN_FRAGMENT_TIME = 30; //最小工作时间30分钟
 const MAX_FRAGMENT_TIME = 30 * 4; // 最长工作时长2小时
 
-const BREAK_STYLES = [
-    {
-        label: '通知',
-        value: 'notification'
-    },
-    {
-        label: '警告框',
-        value: 'alert'
-    },
-    {
-        label: '自动锁屏',
-        value: 'auto-lock-screen'
-    }
-];
 const LABEL_SPAN = 4;
 
 function shouldShowAlert(fragmentTime: number) {
@@ -71,6 +58,7 @@ export default function WorkTimeControl() {
         cycleData,
         setCycleData
     } = useCycleConfig();
+    const [breakStyle, setBreakStyle] = useBreakStyleState();
 
     return (
         <Fragment>
@@ -138,13 +126,7 @@ export default function WorkTimeControl() {
                     />
                 </Form.Item>
                 <Form.Item label="中断方式">
-                    <Radio.Group buttonStyle="solid">
-                        {BREAK_STYLES.map(style => (
-                            <Radio.Button value={style.value} key={style.value}>
-                                {style.label}
-                            </Radio.Button>
-                        ))}
-                    </Radio.Group>
+                    <BreakStyle value={breakStyle} onChange={setBreakStyle} />
                 </Form.Item>
                 <Form.Item wrapperCol={{ offset: LABEL_SPAN }}>
                     <Button type="primary">设定好了</Button>

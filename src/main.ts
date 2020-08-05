@@ -16,11 +16,8 @@ import ElectronDevtoolsInstaller, {
     REDUX_DEVTOOLS
 } from 'electron-devtools-installer';
 import './main-process/PRTemplate';
-
-const STATIC_PATH =
-    process.env.NODE_ENV === 'development'
-        ? path.resolve(__dirname, '..', './public')
-        : path.resolve(__dirname, './');
+import './main-process/WorkTimeControl';
+import { STATIC_PATH } from '@/utils/assets';
 
 (async function bootstarp() {
     await developmentEnvSetup();
@@ -68,7 +65,6 @@ async function developmentEnvSetup() {
 }
 
 async function appSetup() {
-    app.setName('Dragon');
     // 隐藏原生菜单栏
     Menu.setApplicationMenu(null);
     if (process.platform === 'darwin') {
