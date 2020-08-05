@@ -1,8 +1,7 @@
 import React, { useState, Fragment } from 'react';
 import CycleSelector, {
-    ConfigData as CycleConfigData
+    useCycleConfig
 } from '../../components/CycleSelector/index';
-import { CYCLE_TYPE } from '../../components/CycleSelector/constants';
 import { Form, Button, TimePicker, Slider, Radio, Row, Col, Alert } from 'antd';
 
 const { RangePicker } = TimePicker;
@@ -66,8 +65,12 @@ export default function WorkTimeControl() {
     const [, setEndTime] = useState('');
     const [fragmentTime, setFragmentTime] = useState(45);
     const [restTime, setRestTime] = useState(15);
-    const [cycleType, setCycleType] = useState<CYCLE_TYPE | null>(null);
-    const [cycleData, setCycleData] = useState<CycleConfigData>(null);
+    const {
+        cycleType,
+        setCycleType,
+        cycleData,
+        setCycleData
+    } = useCycleConfig();
 
     return (
         <Fragment>

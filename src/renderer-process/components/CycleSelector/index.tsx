@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Radio, Space } from 'antd';
 import { SemanticCycleTypes, CYCLE_TYPE } from './constants';
 import * as Workday from './Workday';
@@ -13,6 +13,17 @@ interface Props {
 }
 
 export type ConfigData = Workday.Data | ScaleWeek.Data | Custom.Data | null;
+
+export function useCycleConfig() {
+    const [cycleType, setCycleType] = useState<CYCLE_TYPE | null>(null);
+    const [cycleData, setCycleData] = useState<ConfigData>(null);
+    return {
+        cycleType,
+        setCycleType,
+        cycleData,
+        setCycleData
+    };
+}
 
 export default function CycleSelector(props: Props) {
     let configView = null;
