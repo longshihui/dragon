@@ -1,0 +1,19 @@
+.view {
+    display: flex;
+    flex-direction: column;
+    justify-items: stretch;
+    align-items: stretch;
+    height: 100%;
+    .view-title {
+        flex: 0 0 auto;
+    }
+    .view-content {
+        flex: 1;
+    }
+    .view-footer {
+        flex: 0 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

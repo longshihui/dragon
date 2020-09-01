@@ -51,8 +51,9 @@ async function buildDll() {
 
 async function buildMainProcess() {
     Logger('main', '主进程代码开始构建...');
-    await new Promise((resolve, reject) => {
-        webpack(MainProcessDevWebpackConfig, err => {
+    let complier = null;
+    await new Promise<webpack.Compiler>((resolve, reject) => {
+        complier = webpack(MainProcessDevWebpackConfig, err => {
             if (err) {
                 reject(err);
                 return;
@@ -61,6 +62,7 @@ async function buildMainProcess() {
         });
     });
     Logger('main', '主进程代码构建完成！');
+    return complier;
 }
 
 async function runServer() {
@@ -82,20 +84,32 @@ async function runServer() {
     return server;
 }
 
-async function runMainProcess() {
-    Logger('main', '启动App...');
-    const childProcess = ChildProcess.exec('electron ./dist/main.js');
-    childProcess.stdout.pipe(process.stdout);
-    childProcess.stderr.pipe(process.stderr);
+async function runMainProcess(isRestart?: boolean) {
+    Logger('main', isRestart ? '重启中' : '启动App...');
+    let childProcess = null;
+    await new Promise((resolve, reject) => {
+        childProcess = ChildProcess.exec(
+            'electron ./dist/main.js',
+            (err, stdout, stderr) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                Logger('main', stdout);
+                console.error(stderr);
+                resolve();
+            }
+        );
+    });
     return childProcess;
 }
 
 async function main() {
     await cleanOldFiles();
     await buildDll();
-    await buildMainProcess();
+    const complier = await buildMainProcess();
     const server = await runServer();
-    const mainProcess = await runMainProcess();
+    let mainProcess = await runMainProcess();
     const handleProcessClose = () => {
         server.close(() => {
             process.exit(0);
@@ -106,6 +120,17 @@ async function main() {
     };
     process.on('SIGINT', handleProcessClose);
     process.on('SIGTERM', handleProcessClose);
+    complier.watch({}, async err => {
+        console.log('change');
+        if (err) {
+            console.error(err);
+            return;
+        }
+        if (mainProcess && !mainProcess.killed) {
+            mainProcess.kill();
+            mainProcess = await runMainProcess();
+        }
+    });
 }
 
 main();

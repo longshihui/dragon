@@ -1,9 +1,10 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState } from 'react';
 import CycleSelector, {
     useCycleConfig
 } from '../../components/CycleSelector/index';
 import { Form, Button, TimePicker, Slider, Row, Col, Alert } from 'antd';
 import BreakStyle, { useBreakStyleState } from './BreakStyle';
+import View from '@/renderer-process/components/View';
 
 const { RangePicker } = TimePicker;
 
@@ -61,7 +62,10 @@ export default function WorkTimeControl() {
     const [breakStyle, setBreakStyle] = useBreakStyleState();
 
     return (
-        <Fragment>
+        <View
+            title="工作时间控制器"
+            footer={<Button type="primary">设定好了</Button>}
+        >
             <div style={{ marginBottom: '20px' }}>
                 {shouldShowAlert(fragmentTime)}
             </div>
@@ -128,10 +132,7 @@ export default function WorkTimeControl() {
                 <Form.Item label="中断方式">
                     <BreakStyle value={breakStyle} onChange={setBreakStyle} />
                 </Form.Item>
-                <Form.Item wrapperCol={{ offset: LABEL_SPAN }}>
-                    <Button type="primary">设定好了</Button>
-                </Form.Item>
             </Form>
-        </Fragment>
+        </View>
     );
 }

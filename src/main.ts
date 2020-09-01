@@ -18,6 +18,7 @@ import ElectronDevtoolsInstaller, {
 import './main-process/PRTemplate';
 import './main-process/WorkTimeControl';
 import { STATIC_PATH } from '@/utils/assets';
+import './main-process/TimerSchedule/TimeSchedule.bootstrap';
 
 (async function bootstarp() {
     await developmentEnvSetup();
