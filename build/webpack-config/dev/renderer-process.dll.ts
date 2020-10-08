@@ -7,8 +7,8 @@
 import webpack from 'webpack';
 import path from 'path';
 import merge from 'webpack-merge';
-import baseConfig from './webpack.config.base';
-import { dependencies } from '../package.json';
+import baseConfig from '../webpack.config.base';
+import { dependencies } from '../../../package.json';
 
 interface Options {
     outputPath: string;

@@ -1,14 +1,8 @@
 import { Worker } from 'worker_threads';
+import { resolveWorker } from '../../utils/index';
 
-const pool = new Map<string, () => void>();
-const worker: Worker = new Worker('./TimeSchedule.worker.ts');
-
-worker.on('message', id => {
-    const task = pool.get(id);
-    if (task) {
-        task();
-    }
-});
+let pool: Map<string, () => void> = null;
+let worker: Worker = null;
 
 function createSceduleId(): string {
     return '' + pool.size + 1;
@@ -31,4 +25,16 @@ export function removeSchedule(id: string) {
         action: 'terminate',
         data: id
     });
+}
+
+export function start() {
+    pool = new Map<string, () => void>();
+    worker = new Worker(resolveWorker('TimerSchedule'));
+    worker.on('message', id => {
+        const task = pool.get(id);
+        if (task) {
+            task();
+        }
+    });
+    console.log('TimerSchedule 工作线程已启动！');
 }

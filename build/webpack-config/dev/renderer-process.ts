@@ -11,9 +11,9 @@ import path from 'path';
 import webpack from 'webpack';
 import merge from 'webpack-merge';
 import { spawn } from 'child_process';
-import baseConfig from './webpack.config.base';
+import baseConfig from '../webpack.config.base';
 import FriendlyErrorsWebpackPlugin from 'friendly-errors-webpack-plugin';
-import ProjectConfig from '../project.config';
+import ProjectConfig from '../../../project.config';
 
 interface Options {
     host: string;
@@ -187,14 +187,14 @@ export default function ({ host, port, dllManifestPath }: Options) {
             new webpack.EnvironmentPlugin({
                 NODE_ENV: 'development'
             }),
-            new webpack.ProgressPlugin(),
-            new FriendlyErrorsWebpackPlugin({
-                compilationSuccessInfo: {
-                    messages: [`Render进程运行在 ${publicPath}`],
-                    notes: ['编译成功']
-                },
-                clearConsole: true
-            })
+            new webpack.ProgressPlugin()
+            // new FriendlyErrorsWebpackPlugin({
+            //     compilationSuccessInfo: {
+            //         messages: [`Render进程运行在 ${publicPath}`],
+            //         notes: ['编译成功']
+            //     },
+            //     clearConsole: true
+            // })
         ],
         resolve: {
             alias: {

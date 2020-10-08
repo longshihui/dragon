@@ -18,10 +18,11 @@ import ElectronDevtoolsInstaller, {
 import './main-process/PRTemplate';
 import './main-process/WorkTimeControl';
 import { STATIC_PATH } from '@/utils/assets';
-import './main-process/TimerSchedule/TimeSchedule.bootstrap';
+import * as WorkerThreads from '@/worker-threads';
 
 (async function bootstarp() {
     await developmentEnvSetup();
+    WorkerThreads.start();
     await appSetup();
     await initMainBrowserWindow();
 })();

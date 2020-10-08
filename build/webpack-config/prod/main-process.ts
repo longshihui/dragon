@@ -7,9 +7,9 @@ import merge from 'webpack-merge';
 import TerserPlugin from 'terser-webpack-plugin';
 // 打包解析
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import baseConfig from './webpack.config.base';
-import CheckNodeEnv from './utils/CheckNodeEnv';
-import ProjectConfig from '../project.config';
+import baseConfig from '../webpack.config.base';
+import CheckNodeEnv from '../../utils/CheckNodeEnv';
+import ProjectConfig from '../../../project.config';
 
 CheckNodeEnv('production');
 
