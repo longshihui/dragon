@@ -4,8 +4,8 @@
   "description": "一条龙服务",
   "main": "./dist/main.js",
   "scripts": {
-    "dev": "cross-env HOT=1 NODE_ENV=development ts-node --project tsconfig-for-node.json ./scripts/dev.ts",
-    "build": "cross-env NODE_ENV=production ts-node --project tsconfig-for-node.json ./scripts/build.ts",
+    "dev": "cross-env HOT=1 NODE_ENV=development ts-node --project ./cli/tsconfig.json ./cli/scripts/dev.ts",
+    "build": "cross-env NODE_ENV=production ts-node --project ./cli/tsconfig.json ./cli/scripts/build.ts",
     "package": "yarn build && electron-builder build --publish never",
     "package-all": "yarn build && electron-builder build -mw",
     "package-win": "yarn build && electron-builder build --win --x64",

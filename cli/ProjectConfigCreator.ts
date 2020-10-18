@@ -10,6 +10,6 @@ export interface ProjectConfig {
     };
 }
 
-export default function(config: ProjectConfig) {
+export default function (config: ProjectConfig) {
     return config;
 }

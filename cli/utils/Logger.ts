@@ -26,7 +26,7 @@ export function levelLog(
     console.log(paint(level, message));
 }
 
-export default function(
+export default function (
     type: 'main' | 'renderer' | 'default',
     message: string
 ) {

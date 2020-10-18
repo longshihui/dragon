@@ -1,5 +1,5 @@
 import changelog from 'conventional-changelog';
-import { levelLog, paint } from '../build/utils/Logger';
+import { levelLog, paint } from '../utils/Logger';
 import fs from 'fs';
 import path from 'path';
 import semver from 'semver';

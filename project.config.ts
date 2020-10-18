@@ -1,4 +1,4 @@
-import ProjectConfigCreator from './build/ProjectConfigCreator';
+import ProjectConfigCreator from './cli/ProjectConfigCreator';
 import path from 'path';
 
 export default ProjectConfigCreator({

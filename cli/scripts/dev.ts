@@ -1,15 +1,15 @@
 import webpack, { Compiler } from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
-import MainProcessDevWebpackConfig from '../build/webpack-config/dev/main-process';
-import RendererDevDllWebpackConfig from '../build/webpack-config/dev/renderer-process.dll';
-import RendererDevWebpackConfig from '../build/webpack-config/dev/renderer-process';
-import WorkerThreadsWebpackConfig from '../build/webpack-config/dev/worker-threads';
+import MainProcessDevWebpackConfig from '../webpack-config/dev/main-process';
+import RendererDevDllWebpackConfig from '../webpack-config/dev/renderer-process.dll';
+import RendererDevWebpackConfig from '../webpack-config/dev/renderer-process';
+import WorkerThreadsWebpackConfig from '../webpack-config/dev/worker-threads';
 import portFinder from 'portfinder';
 import path from 'path';
-import CheckNodeEnv from '../build/utils/CheckNodeEnv';
+import CheckNodeEnv from '../utils/CheckNodeEnv';
 import ChildProcess from 'child_process';
 import rm from 'rimraf';
-import Logger from '../build/utils/Logger';
+import Logger from '../utils/Logger';
 
 CheckNodeEnv('development');
 // 默认启动的端口
