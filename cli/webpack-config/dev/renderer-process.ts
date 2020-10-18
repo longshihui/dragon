@@ -39,7 +39,7 @@ export default function ({ host, port, dllManifestPath }: Options) {
             filename: ProjectConfig.output.rendererFilename,
             libraryTarget: 'commonjs2'
         },
-
+        stats: 'none',
         module: {
             rules: [
                 {

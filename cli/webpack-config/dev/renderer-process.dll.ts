@@ -34,7 +34,7 @@ export default function (options: Options) {
         target: 'electron-renderer',
 
         externals: ['fsevents', 'crypto-browserify'],
-
+        stats: 'none',
         module: {
             rules: [
                 {

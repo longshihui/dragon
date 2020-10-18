@@ -26,10 +26,9 @@ export function levelLog(
     console.log(paint(level, message));
 }
 
-export default function (
-    type: 'main' | 'renderer' | 'default',
-    message: string
-) {
+export type LoggerType = 'main' | 'renderer' | 'master' | 'worker';
+
+export default function (type: LoggerType, message: string) {
     let color: typeof Color = 'cyan';
     let title = '';
     let log = '';
@@ -45,6 +44,11 @@ export default function (
         case 'renderer': {
             color = 'yellow';
             title = 'Renderer';
+            break;
+        }
+        case 'worker': {
+            color = 'blue';
+            title = 'Worker';
             break;
         }
         default: {

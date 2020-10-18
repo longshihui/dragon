@@ -16,7 +16,7 @@ export default merge.smart(baseConfig, {
         filename: ProjectConfig.output.mainFilename,
         libraryTarget: 'commonjs2'
     },
-
+    stats: 'none',
     plugins: [
         /**
          * Create global constants which can be configured at compile time.
