@@ -1,5 +1,7 @@
 import webpack, { Compiler, Watching } from 'webpack';
-import WebpackDevServer from 'webpack-dev-server';
+import WebpackDevServer, {
+    Configuration as DevServerConfiguartion
+} from 'webpack-dev-server';
 import MainProcessDevWebpackConfig from '../webpack-config/dev/main-process';
 import RendererDevDllWebpackConfig from '../webpack-config/dev/renderer-process.dll';
 import getRendererDevWebpackConfig from '../webpack-config/dev/renderer-process';
@@ -17,7 +19,7 @@ const DEFAULT_PORT = 1212;
 // 默认启动的host
 const DEFAULT_HOST = 'localhost';
 // renderer进程的dll文件输出路径
-const DLL_OUTPUT_PATH = path.join(__dirname, '..', 'dll');
+const DLL_OUTPUT_PATH = path.join(process.cwd(), '..', 'dll');
 
 let WebpackCompilers: {
     main: Compiler;
@@ -33,10 +35,7 @@ let WebpackCompilers: {
 let mainProcess: ChildProcess.ChildProcess = null;
 let isStaringMainProcess = false;
 let rendererServer = null;
-let rendererServerConfig = {
-    host: 'localhost',
-    port: 1212
-};
+let rendererServerConfig: DevServerConfiguartion = {};
 const WatchingMap: {
     main: Watching;
     worker: Watching;
@@ -69,14 +68,14 @@ async function prepareCompliers() {
     const port = await portFinder.getPortPromise();
     const host = process.env.HOST || DEFAULT_HOST;
 
-    rendererServerConfig.host = host;
-    rendererServerConfig.port = port;
-
     const RendererDevWebpackConfig = getRendererDevWebpackConfig({
         host,
         port,
         dllManifestPath: path.resolve(DLL_OUTPUT_PATH, 'renderer.json')
     });
+
+    rendererServerConfig = RendererDevWebpackConfig.devServer;
+
     WebpackDevServer.addDevServerEntrypoints(
         RendererDevWebpackConfig,
         RendererDevWebpackConfig.devServer
@@ -271,10 +270,13 @@ async function runCompilers() {
                     reject(err);
                 }
             );
-            rendererServer = new WebpackDevServer(WebpackCompilers.render);
+            rendererServer = new WebpackDevServer(
+                WebpackCompilers.render,
+                rendererServerConfig
+            );
             rendererServer.listen(
-                rendererServer.port,
-                rendererServer.host,
+                rendererServerConfig.port,
+                rendererServerConfig.host,
                 err => {
                     if (err) {
                         Logger('renderer', err);
