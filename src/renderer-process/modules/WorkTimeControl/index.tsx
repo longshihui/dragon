@@ -73,7 +73,7 @@ export default function WorkTimeControl() {
                 labelCol={{ span: LABEL_SPAN }}
                 wrapperCol={{ span: 24 - LABEL_SPAN }}
             >
-                <Form.Item label="工作时间区间">
+                <Form.Item label="工作时间区间" required>
                     <RangePicker
                         format={TIME_FORMAT}
                         picker="time"

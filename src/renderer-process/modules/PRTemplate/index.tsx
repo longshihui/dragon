@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { Alert } from '@/renderer-process/ui';
 import { promisify } from 'util';
-import DataBase from '@/main-process/DataBase';
+import DataBase from '@/modules/DataBase';
 import { remote } from 'electron';
 import SelectStoreDirectory from './SelectStoreDirectory';
 import PRConfig from './PRConfig';

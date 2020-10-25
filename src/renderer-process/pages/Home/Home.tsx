@@ -1,7 +1,6 @@
 import React from 'react';
 import { RouteComponentProps } from 'react-router-dom';
 import classes from './Home.scss';
-import Card from './Card';
 
 export default class Home extends React.Component<RouteComponentProps> {
     constructor(props: RouteComponentProps) {
