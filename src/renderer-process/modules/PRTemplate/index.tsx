@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { Alert } from '@/renderer-process/ui';
 import { promisify } from 'util';
-import DataBase from '@/modules/DataBase';
+import DataBaseFactory from '@/db';
 import { remote } from 'electron';
 import SelectStoreDirectory from './SelectStoreDirectory';
 import PRConfig from './PRConfig';
@@ -16,6 +16,10 @@ const { Step } = Steps;
 
 const mkdir = promisify(fs.mkdir);
 const DATABASE_KEY = 'create-pr';
+const DataBase = DataBaseFactory<{
+    storeDir: string;
+    createDirList: string[];
+}>(DATABASE_KEY);
 
 interface Props extends RouteComponentProps {}
 
@@ -52,8 +56,8 @@ class CreatePR extends React.Component<Props, State> {
     }
 
     async init() {
-        await DataBase.defaults(DATABASE_KEY, {
-            storageDir: remote.app.getPath('documents'),
+        await DataBase.defaults({
+            storeDir: remote.app.getPath('documents'),
             createDirList: [
                 '需求文档',
                 'UI资源',
@@ -63,24 +67,23 @@ class CreatePR extends React.Component<Props, State> {
                 '其他'
             ]
         });
-        // 链接到数据库
-        const db = await DataBase.connect();
-
-        const { storageDir, createDirList } = db.get(DATABASE_KEY).value();
+        const { storeDir, createDirList } = DataBase.getAll([
+            'storeDir',
+            'createDirList'
+        ]);
         this.setState({
-            storeDirectory: storageDir,
+            storeDirectory: storeDir,
             directoryList: createDirList,
             createDirectoryList: createDirList
         });
     }
     async changestoreDirectory(newDirectory) {
-        const db = await DataBase.connect();
         this.setState(() => {
             return {
                 storeDirectory: newDirectory
             };
         });
-        db.set(`${DATABASE_KEY}.storageDir`, newDirectory).write();
+        await DataBase.set('storeDir', newDirectory);
     }
     async createPR() {
         this.setState({

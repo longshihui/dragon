@@ -1,9 +1,7 @@
 import React from 'react';
 import { Layout } from 'antd';
-import { MenuUnfoldOutlined, MenuFoldOutlined } from '@ant-design/icons';
-import AppMenu from '../AppMenu';
 
-const { Header, Sider, Content } = Layout;
+const { Content } = Layout;
 
 export default class AppLayout extends React.Component {
     state = {
@@ -23,7 +21,7 @@ export default class AppLayout extends React.Component {
     render() {
         return (
             <Layout className="app-layout">
-                <Sider
+                {/* <Sider
                     trigger={null}
                     collapsible
                     collapsed={this.state.collapsed}
@@ -32,7 +30,7 @@ export default class AppLayout extends React.Component {
                         <div className={this.logeClasses} />
                     </div>
                     <AppMenu />
-                </Sider>
+                </Sider> */}
                 <Layout>
                     {/* <Header className="app-header" style={{ padding: 0 }}>
                         {React.createElement(

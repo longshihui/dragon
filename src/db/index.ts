@@ -10,6 +10,6 @@ const source = new DataBaseSource({
             : remote.app.getPath('userData')
 });
 
-export default new DataBase({
-    source
-});
+export default function DataBaseFactory<ModuleData>(namespacee: string) {
+    return new DataBase<ModuleData>(namespacee, source);
+}
