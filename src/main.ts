@@ -18,7 +18,7 @@ import ElectronDevtoolsInstaller, {
 import { STATIC_PATH } from '@/utils/assets';
 
 //安装其他模块的IPC
-import './modules/PRTemplate/main-process';
+import './modules/DirGenerator/main-process';
 
 (async function bootstarp() {
     await developmentEnvSetup();

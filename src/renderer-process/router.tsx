@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import Home from './modules/Home';
-import PRTemplate from '../modules/PRTemplate/render-process';
+import PRTemplate from '../modules/DirGenerator/render-process';
 
 export default function routerView() {
     return (
