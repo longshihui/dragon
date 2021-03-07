@@ -1,5 +1,5 @@
 import { ipcMain, dialog } from 'electron';
-import { IPCEvents } from './constants';
+import { IPCEvents } from '../constants';
 
 ipcMain.on(IPCEvents.SELECT_DIRECTORY, async event => {
     const { filePaths } = await await dialog.showOpenDialog(null, {

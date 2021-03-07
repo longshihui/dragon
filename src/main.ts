@@ -15,14 +15,13 @@ import ElectronDevtoolsInstaller, {
     REACT_DEVELOPER_TOOLS,
     REDUX_DEVTOOLS
 } from 'electron-devtools-installer';
-import './main-process/PRTemplate';
-import './main-process/WorkTimeControl';
 import { STATIC_PATH } from '@/utils/assets';
-import * as WorkerThreads from '@/worker-threads';
+
+//安装其他模块的IPC
+import './modules/PRTemplate/main-process';
 
 (async function bootstarp() {
     await developmentEnvSetup();
-    WorkerThreads.start();
     await appSetup();
     await initMainBrowserWindow();
 })();
