@@ -3,7 +3,7 @@ import { ReactNode, ReactFragment, Component } from 'React';
 type StaticRender = Component | (() => ReactNode | ReactFragment);
 type DynamicRender = () => Promise<StaticRender>;
 
-interface RenderProcessModule {
+export interface RenderProcessModule {
     id: string; // 模块id
     name: string; // 模块的语义化名字
     desc: string; // 模块的具体描述
