@@ -1,7 +1,6 @@
 import React from 'react';
 import fs from 'fs';
 import path from 'path';
-import { Alert } from '@/renderer-process/ui';
 import { promisify } from 'util';
 import DataBaseFactory from '@/db';
 import { remote } from 'electron';
@@ -111,7 +110,7 @@ class CreatePR extends React.Component<Props, State> {
             this.setState({
                 isCreating: false
             });
-            await Alert(e.message);
+            //TODO await Alert(e.message);
         }
     }
     nextStep() {

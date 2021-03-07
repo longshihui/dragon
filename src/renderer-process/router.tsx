@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import Home from './pages/Home';
+import Home from './modules/Home';
 import PRTemplate from './modules/PRTemplate';
 import WorkTimeControl from './modules/WorkTimeControl/index';
 

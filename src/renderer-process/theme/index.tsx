@@ -1,6 +1,4 @@
 import React from 'react';
-import { ThemeProvider } from '@material-ui/styles';
-import { createMuiTheme } from '@material-ui/core/styles';
 import moment from 'moment';
 import palettes from './palettes';
 
@@ -49,11 +47,6 @@ export default class DragonThemeProvider extends React.Component<{}, State> {
         });
     }
     render() {
-        const theme = createMuiTheme({
-            palette: this.state.palette || {}
-        });
-        return (
-            <ThemeProvider theme={theme}>{this.props.children}</ThemeProvider>
-        );
+        return this.props.children;
     }
 }
