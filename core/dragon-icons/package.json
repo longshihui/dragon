@@ -1,0 +1,8 @@
+{
+  "name": "@dragon/icons",
+  "version": "0.0.0",
+  "description": "图标库",
+  "main": "index.js",
+  "author": "longshihui",
+  "license": "MIT"
+}

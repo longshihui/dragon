@@ -1,0 +1,8 @@
+{
+  "name": "@dragon/db",
+  "version": "0.0.0",
+  "description": "本地配置数据库",
+  "main": "index.js",
+  "author": "longshihui",
+  "license": "MIT"
+}

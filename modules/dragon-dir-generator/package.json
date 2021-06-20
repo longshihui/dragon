@@ -1,0 +1,8 @@
+{
+  "name": "@dragon-module/dir-generator",
+  "version": "0.0.0",
+  "description": "文件树生成器",
+  "main": "index.js",
+  "author": "longshihui",
+  "license": "MIT"
+}

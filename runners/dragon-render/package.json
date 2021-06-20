@@ -1,0 +1,14 @@
+{
+  "name": "@dragon/render",
+  "version": "0.0.0",
+  "description": "渲染进程",
+  "main": "index.js",
+  "author": "longshihui",
+  "license": "MIT",
+  "dependencies": {
+    "@dragon/db": "0.0.0",
+    "@dragon/icons": "0.0.0",
+    "@dragon/ui": "0.0.0",
+    "@dragon-module/home": "0.0.0"
+  }
+}

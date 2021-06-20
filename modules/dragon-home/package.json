@@ -1,0 +1,8 @@
+{
+  "name": "@dragom-module/home",
+  "version": "0.0.0",
+  "description": "主页",
+  "main": "./src/index.ts",
+  "author": "longshihui",
+  "license": "MIT"
+}

@@ -1,0 +1,8 @@
+{
+  "name": "@dragon/ui",
+  "version": "0.0.0",
+  "description": "render部分的ui库",
+  "main": "index.js",
+  "author": "longshihui",
+  "license": "MIT"
+}

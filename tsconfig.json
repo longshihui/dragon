@@ -1,33 +1,15 @@
 {
-  "compilerOptions": {
-    "module": "esnext",
-    "target": "esnext",
-    "sourceMap": false,
-    "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "jsx": "react",
-    "baseUrl": ".",
-    "paths": {
-      "@/*": [
-        "src/*"
-      ],
-      "~/*": [
-        "src/*"
-      ]
-    },
-    "lib": [
-      "esnext",
-      "dom",
-      "dom.iterable"
+    "references": [
+        { "path": "./core/dragon-db" },
+        { "path": "./core/dragon-icons" },
+        { "path": "./core/dragon-ui" },
+        { "path": "./develop/dragon-build" },
+        { "path": "./develop/dragon-cli" },
+        { "path": "./develop/dragon-dev" },
+        { "path": "./develop/dragon-tester" },
+        { "path": "./modules/dragon-dir-generator" },
+        { "path": "./modules/dragon-home" },
+        { "path": "./runners/dragon-main" },
+        { "path": "./runners/dragon-render" }
     ]
-  },
-  "include": [
-    "./src/**/*"
-  ],
-  "exclude": [
-    "./dist",
-    "node_modules"
-  ]
 }
