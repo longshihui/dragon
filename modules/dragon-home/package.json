@@ -1,5 +1,5 @@
 {
-  "name": "@dragom-module/home",
+  "name": "@dragon-module/home",
   "version": "0.0.0",
   "description": "主页",
   "main": "./src/index.ts",

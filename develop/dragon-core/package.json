@@ -1,11 +1,12 @@
 {
-  "name": "@dragon-cli/dev",
+  "name": "@dragon-cli/core",
   "version": "0.0.0",
-  "description": "提供开发环境",
-  "main": "index.js",
+  "description": "dragon cli",
+  "main": "./src/index.ts",
   "author": "longshihui",
   "license": "MIT",
   "dependencies": {
-    "fork-ts-checker-webpack-plugin": "^4.1.2"
+    "@types/inquirer": "^6.5.0",
+    "chalk": "^4.0.0"
   }
 }

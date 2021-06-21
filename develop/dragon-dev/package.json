@@ -6,6 +6,7 @@
   "author": "longshihui",
   "license": "MIT",
   "dependencies": {
+    "@dragon-cli/core": "0.0.0",
     "fork-ts-checker-webpack-plugin": "^4.1.2"
   }
 }

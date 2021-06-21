@@ -1,0 +1,8 @@
+{
+  "name": "@dragon-cli/release",
+  "version": "0.0.0",
+  "description": "提供开发环境",
+  "main": "index.js",
+  "author": "longshihui",
+  "license": "MIT"
+}
