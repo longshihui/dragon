@@ -2,7 +2,7 @@
     "extends": "../../tsconfig.node.json",
     "references": [
         {
-            "path": "../dragon-cli"
+            "path": "../dragon-core"
         }
     ]
 }

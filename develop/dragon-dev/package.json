@@ -2,7 +2,7 @@
   "name": "@dragon-cli/dev",
   "version": "0.0.0",
   "description": "提供开发环境",
-  "main": "index.js",
+  "main": "./src/index.ts",
   "author": "longshihui",
   "license": "MIT",
   "dependencies": {

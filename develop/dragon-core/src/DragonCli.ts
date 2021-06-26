@@ -1,33 +1,68 @@
-import DragonCliModuleApi from './DragonCliModuleApi';
-import type { CommandEntry, DragonCliModule } from './types';
+import type DragonCliModule from './DragonCliModule';
+import { MODE } from './constants';
+import type { Command } from 'commander';
 
+const MODE_VALUES = Object.keys(MODE);
 export default class DragonCli {
-    private readonly mode: string;
     // 命令集合
-    readonly commands: Map<string, CommandEntry<any>> = new Map();
-    constructor(mode) {
-        this.mode = mode;
-    }
+    readonly modules: Map<string, DragonCliModule> = new Map();
+    mode: MODE;
     async registerModule(dragonModule: DragonCliModule) {
-        if (!(dragonModule.mode === this.mode)) {
-            return;
-        }
-        const api = new DragonCliModuleApi(this);
-        await dragonModule.install(api);
+        this.modules.set(dragonModule.id, dragonModule);
+    }
+    init(mode: MODE) {
+        this.mode = mode;
     }
     /**
      * 运行一个命令
-     * @param command 命令名
-     * @param options 命令执行时的参数
      */
-    async runCommand<CommandOptions>(
-        command: string,
-        options: CommandEntry<CommandOptions>
-    ) {
-        if (!this.commands.has(command)) {
-            throw new Error(`命令: ${command} 未找到`);
+    async runModule(mode: MODE, moduleId: string, data: any) {
+        if (this.modules.has(moduleId)) {
+            throw new Error(`Dragon Cli: 模块${moduleId}不存在!`);
         }
-        const entry = this.commands.get(command);
-        return await entry(options);
+        const cliModule = this.modules.get(moduleId);
+
+        await cliModule.init(this);
+        await cliModule.run({
+            mode,
+            data,
+            context: this
+        });
+    }
+    async destroy() {
+        const modules = [...this.modules.values()];
+        await Promise.all(modules.map(m => m.destroy()));
+        process.exit(0);
+    }
+    run(program: Command) {
+        const modules = [...this.modules.values()];
+
+        program
+            .version('beta', '-v, --version', '当前cli版本')
+            .name('dragon-cli')
+            .usage('<command> --mode <mode>')
+            .description('Dragon Cli, 为Dragon App量身打造。')
+            .helpOption('-h, --help', '显示帮助信息')
+            .addHelpCommand(false)
+            .addHelpCommand('help', '显示帮助信息');
+
+        program.on('command:*', () => {
+            program.help();
+        });
+
+        modules.forEach(module => {
+            const command = module.registerCommand();
+            command.requiredOption(
+                '-m, --mode <mode>',
+                `模式 ${MODE_VALUES.join(' | ')}`
+            );
+            command.action(options => {
+                const data = Object.assign({}, options);
+                delete data.mode;
+                this.runModule(options.mode, module.id, data);
+            });
+        });
+
+        program.parse();
     }
 }

@@ -8,6 +8,7 @@
         "emitDecoratorMetadata": true,
         "moduleResolution": "node",
         "resolveJsonModule": true,
+        "downlevelIteration": true,
         "lib": ["ESNext"],
         "composite": true
     }
