@@ -3,13 +3,7 @@
  */
 import type DragonCli from './DragonCli';
 import type { Command } from 'commander';
-
-interface runArguments<Data> {
-    data: Data;
-    mode: string;
-    context: DragonCli;
-}
-
+import type { RunArguments } from './types';
 abstract class DragonCliModule {
     public abstract readonly id: string;
     abstract registerCommand(program: Command): Command;
@@ -18,7 +12,7 @@ abstract class DragonCliModule {
         return Promise.resolve();
     }
     // 主程序
-    abstract run<Data>(args: runArguments<Data>): Promise<void>;
+    abstract run(args: RunArguments<any>): Promise<void>;
     // 销毁
     destroy(): Promise<void> {
         return Promise.resolve();

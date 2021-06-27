@@ -4,8 +4,9 @@
   "description": "dragon cli",
   "main": "./src/index.ts",
   "bin": {
-    "dragon-cli": "./bin/dragon-cli.ts"
+    "dragon-cli": "./bin/cli.js"
   },
+  "main:": "./src/dragon-cli.ts",
   "author": "longshihui",
   "license": "MIT",
   "dependencies": {

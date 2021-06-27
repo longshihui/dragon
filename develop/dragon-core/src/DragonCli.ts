@@ -14,7 +14,7 @@ export default class DragonCli {
      * 运行一个命令
      */
     async runModule(mode: string, moduleId: string, data: any) {
-        if (this.modules.has(moduleId)) {
+        if (!this.modules.has(moduleId)) {
             throw new Error(`Dragon Cli: 模块${moduleId}不存在!`);
         }
         const cliModule = this.modules.get(moduleId);

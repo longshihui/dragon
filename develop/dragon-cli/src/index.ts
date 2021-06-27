@@ -1,8 +1,3 @@
-import { DragonCli } from '@dragon-cli/core';
-import Dev from '@dragon-cli/dev';
+import cli from './dragon-cli';
 
-const cli = new DragonCli();
-
-cli.registerModule(new Dev());
-
-export default cli;
+cli.run('development');
