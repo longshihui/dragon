@@ -127,3 +127,5 @@ src/types/
 
 dist/
 !/dll/
+
+.yarn/
