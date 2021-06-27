@@ -6,8 +6,17 @@
   "author": "longshihui",
   "license": "MIT",
   "dependencies": {
+    "@dragon-cli/babel-preset": "^0.0.0",
     "@dragon-cli/core": "0.0.0",
-    "fork-ts-checker-webpack-plugin": "^4.1.2",
-    "webpack": "^5.40.0"
+    "babel-loader": "^8.2.2",
+    "fork-ts-checker-webpack-plugin": "^6.2.12",
+    "portfinder": "^1.0.28",
+    "ts-loader": "^9.2.3",
+    "webpack": "^5.40.0",
+    "webpack-dev-server": "^3.11.2",
+    "webpack-merge": "^5.8.0"
+  },
+  "devDependencies": {
+    "@types/webpack-dev-server": "^3.11.4"
   }
 }

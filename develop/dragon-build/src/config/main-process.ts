@@ -7,7 +7,7 @@ import merge from 'webpack-merge';
 import TerserPlugin from 'terser-webpack-plugin';
 // 打包解析
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
-import baseConfig from '../webpack.config.base';
+import baseConfig from '@dragon-cli/dev/src/config/webpack.config.base';
 import CheckNodeEnv from '../../src/utils/CheckNodeEnv';
 import ProjectConfig from '../../../project.config';
 
