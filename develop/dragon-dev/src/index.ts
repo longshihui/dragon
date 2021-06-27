@@ -1,14 +1,14 @@
-import { DragonCli, DragonCliModule, MODE } from '@dragon-cli/core';
+import { DragonCliModule } from '@dragon-cli/core';
+import { Command } from 'commander';
 
 class DevModule extends DragonCliModule {
-    init(context: DragonCli): Promise<void> {
-        throw new Error('Method not implemented.');
+    public id: string = 'dev';
+    registerCommand(program: Command): Command {
+        return program.command('dev').description('运行开发环境代码');
     }
-    destroy(): Promise<void> {
-        throw new Error('Method not implemented.');
-    }
-    run(options): Promise<void> {
-        throw new Error('Method not implemented.');
+    run(): Promise<void> {
+        console.log('dev');
+        return Promise.resolve();
     }
 }
 

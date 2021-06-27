@@ -10,8 +10,8 @@
     "develop/*"
   ],
   "scripts": {
-    "dev": "dragon-cli dev",
-    "build": "dragon-cli build",
+    "dev": "dragon-cli dev --mode development",
+    "build": "dragon-cli build --mode production",
     "release": "dragon-cli release",
     "create-icon": "electron-icon-builder --input=./public/logo.png --output=./public/app-icon",
     "prepare": "husky install",

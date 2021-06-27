@@ -2,24 +2,27 @@
  * Cli模块抽象类
  */
 import type DragonCli from './DragonCli';
-import type { MODE } from './constants';
 import type { Command } from 'commander';
 
 interface runArguments<Data> {
     data: Data;
-    mode: MODE;
+    mode: string;
     context: DragonCli;
 }
 
 abstract class DragonCliModule {
     public abstract readonly id: string;
-    abstract registerCommand(): Command;
+    abstract registerCommand(program: Command): Command;
     // 初始化
-    abstract init(context: DragonCli): Promise<void>;
+    init(context: DragonCli): Promise<void> {
+        return Promise.resolve();
+    }
     // 主程序
     abstract run<Data>(args: runArguments<Data>): Promise<void>;
     // 销毁
-    abstract destroy(): Promise<void>;
+    destroy(): Promise<void> {
+        return Promise.resolve();
+    }
 }
 
 export default DragonCliModule;

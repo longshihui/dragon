@@ -1,22 +1,19 @@
 import type DragonCliModule from './DragonCliModule';
-import { MODE } from './constants';
-import type { Command } from 'commander';
-
-const MODE_VALUES = Object.keys(MODE);
+import { Command } from 'commander';
 export default class DragonCli {
     // 命令集合
     readonly modules: Map<string, DragonCliModule> = new Map();
-    mode: MODE;
+    mode: string;
     async registerModule(dragonModule: DragonCliModule) {
         this.modules.set(dragonModule.id, dragonModule);
     }
-    init(mode: MODE) {
+    init(mode: string) {
         this.mode = mode;
     }
     /**
      * 运行一个命令
      */
-    async runModule(mode: MODE, moduleId: string, data: any) {
+    async runModule(mode: string, moduleId: string, data: any) {
         if (this.modules.has(moduleId)) {
             throw new Error(`Dragon Cli: 模块${moduleId}不存在!`);
         }
@@ -34,8 +31,9 @@ export default class DragonCli {
         await Promise.all(modules.map(m => m.destroy()));
         process.exit(0);
     }
-    run(program: Command) {
+    run(mode: string) {
         const modules = [...this.modules.values()];
+        const program = new Command();
 
         program
             .version('beta', '-v, --version', '当前cli版本')
@@ -51,15 +49,8 @@ export default class DragonCli {
         });
 
         modules.forEach(module => {
-            const command = module.registerCommand();
-            command.requiredOption(
-                '-m, --mode <mode>',
-                `模式 ${MODE_VALUES.join(' | ')}`
-            );
-            command.action(options => {
-                const data = Object.assign({}, options);
-                delete data.mode;
-                this.runModule(options.mode, module.id, data);
+            module.registerCommand(program).action(options => {
+                this.runModule(mode, module.id, options);
             });
         });
 
