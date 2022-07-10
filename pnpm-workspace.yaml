@@ -1,0 +1,5 @@
+packages:
+ - dragon-core/*
+ - dragon-lib/*
+ - dragon-modules/*
+ - scripts/*

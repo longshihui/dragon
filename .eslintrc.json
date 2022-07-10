@@ -1,0 +1,42 @@
+{
+    "env": {
+        "browser": true,
+        "node": true,
+        "es6": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:vue/vue3-recommended",
+        "prettier",
+        "prettier/@typescript-eslint"
+    ],
+    "settings": {
+        "react": {
+            "version": "latest"
+        }
+    },
+    "plugins": ["@typescript-eslint"],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": 9,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "jsx": true,
+            "modules": true
+        },
+        "useJSXTextNode": true,
+        "project": "./tsconfig.json"
+    },
+    "rules": {
+        "no-console": "off"
+    },
+    "overrides": [
+        {
+            "files": ["*.ts", "*.tsx"],
+            "rules": {
+                "@typescript-eslint/no-unused-vars": [2, { "args": "none" }]
+            }
+        }
+    ]
+}

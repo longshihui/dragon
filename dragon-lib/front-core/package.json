@@ -1,0 +1,7 @@
+{
+  "name": "@dragon-app/front-core",
+  "version": "0.0.0",
+  "description": "Dragon模块渲染进程核心代码",
+  "author": "Long ShiHui",
+  "license": "MIT"
+}

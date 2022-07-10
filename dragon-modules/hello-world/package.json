@@ -1,0 +1,15 @@
+{
+  "name": "@dragon-app/module-hello-world",
+  "version": "0.0.0",
+  "description": "示例模块",
+  "author": "Long ShiHui",
+  "license": "MIT",
+  "exports": {
+    "./front": {
+      "import": "./front/index.ts"
+    },
+    "./backend": {
+      "import": "./backend/index.ts"
+    }
+  }
+}

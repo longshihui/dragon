@@ -1,0 +1,10 @@
+{
+  "name": "@dragon-app/resources",
+  "version": "0.0.0",
+  "description": "图标库",
+  "scripts": {
+    "create-icon": "electron-icon-builder --input=./src/logo.png --output=./app-icon"
+  },
+  "author": "Long ShiHui",
+  "license": "MIT"
+}

@@ -1,0 +1,7 @@
+{
+  "name": "@dragon-app/backend-core",
+  "version": "0.0.0",
+  "description": "Dragon模块后台部分核心代码",
+  "author": "Long ShiHui",
+  "license": "MIT"
+}
