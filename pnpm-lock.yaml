@@ -25,12 +25,14 @@ importers:
       typescript: ^4.7.4
       vite: ^2.9.14
       vue: ^3.2.37
+      vue-router: ^4.1.2
     dependencies:
       element-plus: registry.npmmirror.com/element-plus/2.2.9_vue@3.2.37
       pinia: registry.npmmirror.com/pinia/2.0.14_j6bzmzd4ujpabbp5objtwxyjp4
       reflect-metadata: registry.npmmirror.com/reflect-metadata/0.1.13
       tsyringe: registry.npmmirror.com/tsyringe/4.7.0
       vue: registry.npmmirror.com/vue/3.2.37
+      vue-router: registry.npmmirror.com/vue-router/4.1.2_vue@3.2.37
     devDependencies:
       '@commitlint/cli': registry.npmmirror.com/@commitlint/cli/17.0.3
       '@commitlint/config-conventional': registry.npmmirror.com/@commitlint/config-conventional/17.0.3
@@ -6192,6 +6194,18 @@ packages:
     dependencies:
       '@vue/devtools-api': registry.npmmirror.com/@vue/devtools-api/6.2.0
       vue: registry.npmmirror.com/vue/3.2.26
+    dev: false
+
+  registry.npmmirror.com/vue-router/4.1.2_vue@3.2.37:
+    resolution: {integrity: sha512-5BP1qXFncVRwgV/XnqzsKApdMjQPqWIpoUBdL1ynz8HyLxIX/UDAx7Ql2BjmA5CXT/p61JfZvkpiFWFpaqcfag==, registry: https://registry.npm.taobao.org/, tarball: https://registry.npmmirror.com/vue-router/-/vue-router-4.1.2.tgz}
+    id: registry.npmmirror.com/vue-router/4.1.2
+    name: vue-router
+    version: 4.1.2
+    peerDependencies:
+      vue: ^3.2.0
+    dependencies:
+      '@vue/devtools-api': registry.npmmirror.com/@vue/devtools-api/6.2.0
+      vue: registry.npmmirror.com/vue/3.2.37
     dev: false
 
   registry.npmmirror.com/vue-tsc/0.3.0:
