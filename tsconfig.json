@@ -1,33 +1,16 @@
 {
-    "compilerOptions": {
-        "rootDir": ".",
-        "baseUrl": ".",
-        "outDir": "dist",
-        "module": "NodeNext",
-        "target": "ESNext",
-        "sourceMap": true,
-        "moduleResolution": "NodeNext",
-        "skipLibCheck": true,
-        "strict": true,
-        "isolatedModules": true,
-        "allowSyntheticDefaultImports": true,
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
-        "lib": [
-            "ESNext",
-            "DOM",
-            "DOM.Iterable"
-        ]
-    },
-    "include": [
-        "dragon-core/*/src/**/*",
-        "dragon-lib/*/src/**/*",
-        "dragon-modules/*/backend/**/*",
-        "dragon-modules/*/front/**/*",
-        "types/**/*",
-        "**/types/**/*"
-    ],
-    "exclude": [
-        "node_modules"
+    "references": [
+        {
+            "path": "./tsconfig.node.json"
+        },
+        {
+            "path": "./tsconfig.backend.json"
+        },
+        {
+            "path": "./tsconfig.preload.json"
+        },
+        {
+            "path": "./tsconfig.render.json"
+        }
     ]
 }

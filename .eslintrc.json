@@ -6,37 +6,21 @@
     },
     "extends": [
         "eslint:recommended",
-        "plugin:react/recommended",
         "plugin:vue/vue3-recommended",
-        "prettier",
-        "prettier/@typescript-eslint"
+        "plugin:@typescript-eslint/recommended",
+        "prettier"
     ],
-    "settings": {
-        "react": {
-            "version": "latest"
-        }
-    },
-    "plugins": ["@typescript-eslint"],
-    "parser": "@typescript-eslint/parser",
+    "plugins": [
+        "@typescript-eslint"
+    ],
+    "parser": "vue-eslint-parser",
     "parserOptions": {
-        "ecmaVersion": 9,
+        "parser": "@typescript-eslint/parser",
+        "ecmaVersion": "latest",
         "sourceType": "module",
         "ecmaFeatures": {
             "jsx": true,
             "modules": true
-        },
-        "useJSXTextNode": true,
-        "project": "./tsconfig.json"
-    },
-    "rules": {
-        "no-console": "off"
-    },
-    "overrides": [
-        {
-            "files": ["*.ts", "*.tsx"],
-            "rules": {
-                "@typescript-eslint/no-unused-vars": [2, { "args": "none" }]
-            }
         }
-    ]
+    }
 }

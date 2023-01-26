@@ -1,0 +1,18 @@
+{
+    "extends": "./tsconfig.base.json",
+    "compilerOptions": {
+        "composite": true,
+        "lib": [
+            "ESNext",
+            "DOM"
+        ],
+        "types": []
+    },
+    "include": [
+        "src/app-lib/*/src/render",
+        "src/app-modules/*/src/render",
+        "src/app-render/src/**/*",
+        "src/app-types/env.d.ts",
+        "src/app-types/render-env.d.ts"
+    ]
+}

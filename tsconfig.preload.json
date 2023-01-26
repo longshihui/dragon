@@ -1,0 +1,19 @@
+{
+    "extends": "./tsconfig.base.json",
+    "compilerOptions": {
+        "composite": true,
+        "lib": [
+            "DOM",
+            "ESNext"
+        ],
+        "types": [
+            "node"
+        ]
+    },
+    "include": [
+        "src/app-lib/*/src/preload",
+        "src/app-types/env.d.ts",
+        "src/app-types/preload-env.d.ts",
+        "src/app-render/preload.ts",
+    ]
+}

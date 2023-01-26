@@ -1,0 +1,16 @@
+{
+    "extends": "./tsconfig.base.json",
+    "compilerOptions": {
+        "composite": true,
+        "types": [
+            "node"
+        ]
+    },
+    "include": [
+        "src/app-modules/*/src/backend",
+        "src/app-lib/*/src/backend",
+        "src/app-types/env.d.ts",
+        "src/app-types/backend-env.d.ts*",
+        "src/main.ts",
+    ]
+}

@@ -1,0 +1,18 @@
+{
+  "name": "@dragon-render/main",
+  "version": "0.0.0",
+  "description": "示例模块",
+  "author": "Long ShiHui",
+  "license": "MIT",
+  "exports": {
+    "./render": {
+      "import": "./render/index.ts"
+    },
+    "./render/preload": {
+      "import": "./render/preload.ts"
+    },
+    "./backend": {
+      "import": "./backend/index.ts"
+    }
+  }
+}

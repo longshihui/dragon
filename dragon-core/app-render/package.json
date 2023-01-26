@@ -1,7 +1,0 @@
-{
-  "name": "@dragon-app/app-render",
-  "version": "0.0.0",
-  "type": "module",
-  "author": "Long ShiHui",
-  "description": "Dragon App渲染进程"
-}
