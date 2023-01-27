@@ -2,6 +2,10 @@
  * Dragon主进程
  */
 import { BrowserWindow, app } from 'electron';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 function createWindow(url: string) {
     let mainWindow: BrowserWindow | null = new BrowserWindow({
@@ -10,7 +14,8 @@ function createWindow(url: string) {
         height: 728,
         resizable: false,
         webPreferences: {
-            nodeIntegration: true
+            nodeIntegration: true,
+            preload: resolve(__dirname, './preload.cjs')
         }
         //icon: path.resolve(STATIC_PATH, './app-icon/win/icon.ico')
     });
@@ -35,11 +40,7 @@ function createWindow(url: string) {
 }
 
 app.on('window-all-closed', () => {
-    // Respect the OSX convention of having the application in memory even
-    // after all windows have been closed
-    if (process.platform !== 'darwin') {
-        app.exit();
-    }
+    app.exit();
 });
 
 async function main() {

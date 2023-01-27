@@ -15,6 +15,7 @@
     "include": [
         "vite.config.ts",
         "vite.config.render.ts",
+        "vite.config.preload.ts",
         "scripts/*"
     ]
 }

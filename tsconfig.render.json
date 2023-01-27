@@ -5,8 +5,7 @@
         "lib": [
             "ESNext",
             "DOM"
-        ],
-        "types": []
+        ]
     },
     "include": [
         "src/app-lib/*/src/render",

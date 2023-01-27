@@ -12,14 +12,14 @@ const externalNodeBuiltinModules = new Set(
 export default defineConfig({
     mode: process.env.MODE,
     build: {
-        sourcemap: 'inline',
+        sourcemap: process.env.MODE === 'development' ? 'inline' : false,
         target: `node16`,
         outDir: 'dist',
         emptyOutDir: false,
         assetsDir: '.',
         minify: process.env.MODE !== 'development',
         lib: {
-            entry: './src/main.ts',
+            entry: './src/app-render/preload.ts',
             formats: ['cjs']
         },
         rollupOptions: {
