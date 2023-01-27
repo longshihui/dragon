@@ -4,11 +4,6 @@
 import { defineConfig } from 'vite';
 import { builtinModules } from 'node:module';
 
-const externalNodeBuiltinModules = new Set(
-    ...builtinModules,
-    builtinModules.map(moduleName => `node:${moduleName}`)
-);
-
 export default defineConfig({
     mode: process.env.MODE,
     build: {
